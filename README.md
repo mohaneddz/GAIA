@@ -8,6 +8,14 @@ It combines a modern frontend with native desktop packaging for fast local workf
 
 ---
 
+## Screenshot
+
+<p align="center">
+  <img src="docs/screenshots/gaia-dashboard.png" alt="GAIA health analytics dashboard" width="100%">
+</p>
+
+---
+
 ## Tech Used
 
 ![Tauri](https://img.shields.io/badge/Tauri-24C8DB?style=for-the-badge&logo=tauri&logoColor=white)
