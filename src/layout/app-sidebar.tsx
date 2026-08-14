@@ -153,7 +153,7 @@ const data = {
   ],
   tools: [
     {
-      name: "Ask MAIA",
+      name: "Ask GAIA",
       url: "/chat",
       icon: Sparkles,
     },
@@ -187,7 +187,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <a className="flex items-center gap-2 cursor-pointer" href="/">
             <img src='/images/logo.png' alt='' width={40} height={40} />
             {state === "expanded" && (
-              <span className="text-2xl w-full truncate font-black" style={{ background: 'linear-gradient(to bottom, #052c6b, #0747c0)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>MAIA+</span>
+              <span className="text-2xl w-full truncate font-black" style={{ background: 'linear-gradient(to bottom, #052c6b, #0747c0)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>GAIA</span>
             )}
           </a>
           <button>
