@@ -167,7 +167,7 @@ export default function Chat() {
     <div className="flex flex-col h-full full  rounded-xl shadow-lg p-4 relative">
       <div className="flex flex-col md:flex-row md:items-center justify-center gap-4 mb-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-800 tracking-tight">MAIA Chat</h1>
+          <h1 className="text-3xl font-bold text-gray-800 tracking-tight">GAIA Chat</h1>
           <p className="text-gray-500 text-sm">Conversational AI for medical insights</p>
         </div>
       </div>

@@ -95,7 +95,7 @@ export default function Settings() {
     <div className="full py-12 px-6">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-8">
-          <h1 className="text-3xl md:text-4xl font-extrabold text-slate-900">MAIA — Settings</h1>
+          <h1 className="text-3xl md:text-4xl font-extrabold text-slate-900">GAIA — Settings</h1>
           <p className="text-sm text-slate-600 mt-2">
             Centralized controls for your account, subscription, billing, notifications and data.
           </p>
@@ -138,7 +138,7 @@ export default function Settings() {
                         <Button onClick={handleGenerateApiKey} variant="outline">Generate</Button>
                         <Button onClick={() => { setRevokeConfirm("revoke"); handleRevokeApiKey(); }} variant="ghost">Quick Revoke</Button>
                       </div>
-                      <p className="text-xs text-slate-500 mt-1">Use this key to call MAIA programmatically (keep it secret).</p>
+                      <p className="text-xs text-slate-500 mt-1">Use this key to call GAIA programmatically (keep it secret).</p>
                     </div>
                   </div>
                 </CardContent>
@@ -160,7 +160,7 @@ export default function Settings() {
                       <div className="space-y-2">
                         <Label>Two-factor Authentication</Label>
                         <div className="flex items-center justify-between">
-                          <span className="text-sm text-slate-600">Protect your MAIA account</span>
+                          <span className="text-sm text-slate-600">Protect your GAIA account</span>
                           <Switch checked={true} onCheckedChange={() => alert("2FA toggle (mock)")}/>
                         </div>
                       </div>
@@ -387,7 +387,7 @@ export default function Settings() {
                     </div>
                     <div>
                       <Label>Webhook URL</Label>
-                      <Input placeholder="https://hooks.example.com/maia" className="mt-1" />
+                      <Input placeholder="https://hooks.example.com/gaia" className="mt-1" />
                       <p className="text-xs text-slate-500 mt-1">Send alerts to your system in real-time.</p>
                     </div>
                   </div>
