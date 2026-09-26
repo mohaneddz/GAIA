@@ -3,12 +3,14 @@ import { getCurrentWindow } from '@tauri-apps/api/window';
 import { listen } from '@tauri-apps/api/event';
 
 export default function Titlebar() {
-  const appWindow = getCurrentWindow();
+  const isTauri = typeof window !== 'undefined' && '__TAURI_INTERNALS__' in window;
+  const appWindow = isTauri ? getCurrentWindow() : null;
 
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isMaximized, setIsMaximized] = useState(false);
 
   const toggleFullscreen = async () => {
+    if (!appWindow) return;
     const fullscreen = await appWindow.isFullscreen();
     const maximized = await appWindow.isMaximized();
 
@@ -22,21 +24,26 @@ export default function Titlebar() {
 
   useEffect(() => {
     const setup = async () => {
-      setIsFullscreen(await appWindow.isFullscreen());
-      setIsMaximized(await appWindow.isMaximized());
+      try {
+        if (!appWindow) return;
+        setIsFullscreen(await appWindow.isFullscreen());
+        setIsMaximized(await appWindow.isMaximized());
 
-      await listen('tauri://fullscreen', () => setIsFullscreen(true));
-      await listen('tauri://enter-fullscreen', () => setIsFullscreen(true));
-      await listen('tauri://exit-fullscreen', () => setIsFullscreen(false));
+        await listen('tauri://fullscreen', () => setIsFullscreen(true));
+        await listen('tauri://enter-fullscreen', () => setIsFullscreen(true));
+        await listen('tauri://exit-fullscreen', () => setIsFullscreen(false));
 
-      await listen('tauri://maximize', () => setIsMaximized(true));
-      await listen('tauri://unmaximize', () => setIsMaximized(false));
-      await listen('tauri://minimize', () => console.log('Window minimized'));
+        await listen('tauri://maximize', () => setIsMaximized(true));
+        await listen('tauri://unmaximize', () => setIsMaximized(false));
+        await listen('tauri://minimize', () => console.log('Window minimized'));
 
-      await listen('tauri://resize', async () => {
-        const max = await appWindow.isMaximized();
-        setIsMaximized(max);
-      });
+        await listen('tauri://resize', async () => {
+          const max = await appWindow.isMaximized();
+          setIsMaximized(max);
+        });
+      } catch (err) {
+        console.warn('Tauri titlebar events not available in browser mode', err);
+      }
     };
 
     setup();
@@ -57,7 +64,7 @@ export default function Titlebar() {
       {!isFullscreen && (
         <>
           <button
-            onClick={() => appWindow.minimize()}
+            onClick={() => appWindow?.minimize()}
             className="titlebar-button z-9999"
             id="titlebar-minimize"
           >
@@ -66,6 +73,7 @@ export default function Titlebar() {
 
           <button
             onClick={async () => {
+              if (!appWindow) return;
               await appWindow.toggleMaximize();
               const max = await appWindow.isMaximized();
               setIsMaximized(max);
@@ -81,7 +89,7 @@ export default function Titlebar() {
           </button>
 
           <button
-            onClick={() => appWindow.close()}
+            onClick={() => appWindow?.close()}
             className="titlebar-button z-9999"
             id="titlebar-close"
           >
