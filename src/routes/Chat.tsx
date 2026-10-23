@@ -7,6 +7,11 @@ import ReactMarkdown from 'react-markdown';
 
 type Message = { role: "user" | "assistant"; content: string };
 
+// Read at build time from .env.local. Vite inlines VITE_ variables into the
+// bundle, so a build made with a key set carries that key.
+const geminiApiKey = import.meta.env.VITE_GEMINI_API_KEY;
+const ai = geminiApiKey ? new GoogleGenAI({ apiKey: geminiApiKey }) : null;
+
 const featureMap: Record<string, string> = {
   "/": "Clinic Statistics",
   "/about": "About",
@@ -66,8 +71,6 @@ export default function Chat() {
 
   useEffect(() => bottomRef.current?.scrollIntoView({ behavior: "smooth" }), [messages]);
 
-  const ai = new GoogleGenAI({ apiKey: "AIzaSyBQ_mOWqULh4oaJMre1HdLfgLXK851tw9w" });
-
   useEffect(() => {
     const stored = getCookie('chatMessages');
     if (stored) {
@@ -85,7 +88,7 @@ export default function Chat() {
   }, [messages]);
 
   const sendMessage = async () => {
-    if (!input.trim()) return;
+    if (!input.trim() || !ai) return;
 
     const userMessage: Message = { role: "user", content: input };
     setMessages((prev) => [...prev, userMessage]);
@@ -171,6 +174,11 @@ export default function Chat() {
           <p className="text-gray-500 text-sm">Conversational AI for medical insights</p>
         </div>
       </div>
+      {!ai && (
+        <p className="mx-auto mb-4 max-w-xl rounded-lg border border-yellow-300 bg-yellow-50 px-4 py-2 text-center text-sm text-yellow-800">
+          Chat is off: set VITE_GEMINI_API_KEY in .env.local and restart the dev server.
+        </p>
+      )}
       {/* Clear Chat Button */}
       <div className="fixed top-8 right-4 z-10">
         <button
@@ -219,7 +227,7 @@ export default function Chat() {
         />
         <button
           onClick={sendMessage}
-          disabled={loading}
+          disabled={loading || !ai}
           className="px-5 py-3 bg-blue-500 text-white rounded-full shadow hover:bg-blue-600 disabled:opacity-50 transition-colors duration-200 flex items-center justify-center"
         >
           {loading ? <span className="animate-pulse">...</span> : "Send"}

@@ -69,9 +69,6 @@
 					"url": "https://discovery.ucl.ac.uk/id/eprint/**"
 				},
 				{
-					"url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=AIzaSyBQ_mOWqULh4oaJMre1HdLfgLXK851tw9w"
-				},
-				{
 					"url": "https://generativelanguage.googleapis.com/v1beta/models/**"
 				},
 				{
