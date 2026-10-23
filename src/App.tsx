@@ -14,6 +14,7 @@ import ChestXray from '@/routes/dashboard/pulmonology/ChestXray';
 import EegAi from '@/routes/dashboard/neurology/EegAi';
 import ScanAnalyzer from '@/routes/dashboard/neurology/ScanAnalyzer';
 import AiCognition from '@/routes/dashboard/neurology/AiCognition';
+import StrokeRisk from '@/routes/dashboard/neurology/StrokeRisk';
 import BreastUltrasound from '@/routes/dashboard/radiology/BreastUltrasound';
 import CellClassification from '@/routes/dashboard/pathology/CellClassification';
 import ReportSummary from '@/routes/dashboard/pathology/ReportSummary';
@@ -42,6 +43,7 @@ function App() {
           <Route path="/dashboard/neurology/eeg-ai" element={<EegAi />} />
           <Route path="/dashboard/neurology/scan-analyzer" element={<ScanAnalyzer />} />
           <Route path="/dashboard/neurology/ai-cognition" element={<AiCognition />} />
+          <Route path="/dashboard/neurology/stroke-risk" element={<StrokeRisk />} />
 
           <Route path="/dashboard/radiology/breast-ultrasound" element={<BreastUltrasound />} />
 

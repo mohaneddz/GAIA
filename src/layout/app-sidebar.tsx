@@ -69,7 +69,7 @@ const data = {
       icon: HeartPulse,
       items: [
         { title: "ECG Monitor", url: "/dashboard/cardiology/ecg-ai" },
-        { title: "Heart Risk Prediction", url: "/dashboard/cardiology/risk-prediction" },
+        { title: "Heart Disease Risk", url: "/dashboard/cardiology/risk-prediction" },
       ],
     },
     {
@@ -87,6 +87,7 @@ const data = {
       items: [
         { title: "EEG Monitor", url: "/dashboard/neurology/eeg-ai" },
         { title: "Brain MRI Classifier", url: "/dashboard/neurology/scan-analyzer" },
+        { title: "Stroke Risk", url: "/dashboard/neurology/stroke-risk" },
         { title: "Cognitive Assessment", url: "/dashboard/neurology/ai-cognition" },
       ],
     },
