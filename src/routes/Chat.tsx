@@ -70,7 +70,11 @@ export default function Chat() {
       .catch(() => setChatStatus("offline"));
   }, []);
 
-  useEffect(() => bottomRef.current?.scrollIntoView({ behavior: "smooth" }), [messages]);
+  // Block body: newer Chromium returns a Promise from scrollIntoView, which
+  // React would otherwise treat as the effect's cleanup and crash on unmount.
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   useEffect(() => {
     const stored = getCookie('chatMessages');
