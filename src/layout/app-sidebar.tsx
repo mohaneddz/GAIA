@@ -30,7 +30,9 @@ import {
   Sparkles,
   Home,
   Cog,
-  User
+  User,
+  Boxes,
+  ScanSearch,
 } from "lucide-react"
 
 import { NavMain } from "@/layout/nav-main"
@@ -57,14 +59,8 @@ const data = {
       url: "#",
       icon: Stethoscope,
       items: [
-        {
-          title: "Treatment Recommendations",
-          url: "/dashboard/general/treatment",
-        },
-        {
-          title: "Blood Analysis",
-          url: "/dashboard/general/blood-analysis",
-        },
+        { title: "Treatment Recommendations", url: "/dashboard/general/treatment" },
+        { title: "Blood Analysis", url: "/dashboard/general/blood-analysis" },
       ],
     },
     {
@@ -72,18 +68,8 @@ const data = {
       url: "#",
       icon: HeartPulse,
       items: [
-        {
-          title: "ECG Interpretation (AI)",
-          url: "/dashboard/cardiology/ecg-ai",
-        },
-        {
-          title: "Heart Risk Prediction",
-          url: "/dashboard/cardiology/risk-prediction",
-        },
-        {
-          title: "Imaging Utility",
-          url: "/dashboard/cardiology/imaging",
-        },
+        { title: "ECG Monitor", url: "/dashboard/cardiology/ecg-ai" },
+        { title: "Heart Risk Prediction", url: "/dashboard/cardiology/risk-prediction" },
       ],
     },
     {
@@ -91,25 +77,7 @@ const data = {
       url: "#",
       icon: Pill,
       items: [
-        {
-          title: "Heart Risk Prediction",
-          url: "/dashboard/pulmonology/risk-prediction",
-        },
-        {
-          title: "Imaging Utility",
-          url: "/dashboard/pulmonology/imaging",
-        },
-      ],
-    },
-    {
-      title: "Radiology",
-      url: "#",
-      icon: Radiation,
-      items: [
-        {
-          title: "X-ray / MRI Analysis (AI)",
-          url: "/dashboard/radiology/ai-imaging",
-        },
+        { title: "Chest X-ray Pneumonia", url: "/dashboard/pulmonology/chest-xray" },
       ],
     },
     {
@@ -117,18 +85,17 @@ const data = {
       url: "#",
       icon: Brain,
       items: [
-        {
-          title: "EEG Pattern Recognition",
-          url: "/dashboard/neurology/eeg-ai",
-        },
-        {
-          title: "Brain Scan Analyzer",
-          url: "/dashboard/neurology/scan-analyzer",
-        },
-        {
-          title: "Cognitive Assessment Tools",
-          url: "/dashboard/neurology/ai-cognition",
-        },
+        { title: "EEG Monitor", url: "/dashboard/neurology/eeg-ai" },
+        { title: "Brain MRI Classifier", url: "/dashboard/neurology/scan-analyzer" },
+        { title: "Cognitive Assessment", url: "/dashboard/neurology/ai-cognition" },
+      ],
+    },
+    {
+      title: "Radiology",
+      url: "#",
+      icon: Radiation,
+      items: [
+        { title: "Breast Ultrasound", url: "/dashboard/radiology/breast-ultrasound" },
       ],
     },
     {
@@ -136,18 +103,17 @@ const data = {
       url: "#",
       icon: Microscope,
       items: [
-        {
-          title: "Cell Image Classifier",
-          url: "/dashboard/pathology/cell-classification",
-        },
-        {
-          title: "Report Summarizer (AI)",
-          url: "/dashboard/pathology/report-summary",
-        },
-        {
-          title: "Specimen Tracker",
-          url: "/dashboard/pathology/specimen",
-        },
+        { title: "Blood Cell Classifier", url: "/dashboard/pathology/cell-classification" },
+        { title: "Report Summarizer", url: "/dashboard/pathology/report-summary" },
+        { title: "Specimen Tracker", url: "/dashboard/pathology/specimen" },
+      ],
+    },
+    {
+      title: "Dermatology",
+      url: "#",
+      icon: ScanSearch,
+      items: [
+        { title: "Skin Lesion Classifier", url: "/dashboard/dermatology/skin-lesion" },
       ],
     },
   ],
@@ -156,6 +122,11 @@ const data = {
       name: "Ask GAIA",
       url: "/chat",
       icon: Sparkles,
+    },
+    {
+      name: "Model Registry",
+      url: "/models",
+      icon: Boxes,
     },
     {
       name: "Patient Search",
