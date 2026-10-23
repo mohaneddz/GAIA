@@ -1,16 +1,10 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { GoogleGenAI } from "@google/genai";
-import { fetch } from "@tauri-apps/plugin-http";
 import ReactMarkdown from 'react-markdown';
+import { fetchHealth, sendChat } from "@/lib/signalApi";
 
-type Message = { role: "user" | "assistant"; content: string };
-
-// Read at build time from .env.local. Vite inlines VITE_ variables into the
-// bundle, so a build made with a key set carries that key.
-const geminiApiKey = import.meta.env.VITE_GEMINI_API_KEY;
-const ai = geminiApiKey ? new GoogleGenAI({ apiKey: geminiApiKey }) : null;
+type Message = { role: "user" | "assistant"; content: string; failed?: boolean };
 
 const featureMap: Record<string, string> = {
   "/": "Clinic Statistics",
@@ -67,7 +61,14 @@ export default function Chat() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [chatStatus, setChatStatus] = useState<"checking" | "ready" | "noKey" | "offline">("checking");
   const bottomRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    fetchHealth()
+      .then((health) => setChatStatus(health.chat ? "ready" : "noKey"))
+      .catch(() => setChatStatus("offline"));
+  }, []);
 
   useEffect(() => bottomRef.current?.scrollIntoView({ behavior: "smooth" }), [messages]);
 
@@ -88,7 +89,7 @@ export default function Chat() {
   }, [messages]);
 
   const sendMessage = async () => {
-    if (!input.trim() || !ai) return;
+    if (!input.trim() || chatStatus !== "ready") return;
 
     const userMessage: Message = { role: "user", content: input };
     setMessages((prev) => [...prev, userMessage]);
@@ -100,9 +101,6 @@ export default function Chat() {
     setMessages((prev) => [...prev, loadingMessage]);
 
     try {
-      const docs = await fetchRelevantDocs(input);
-      const contents: any[] = [];
-
       // Read addedPages from cookie
       const stored = getCookie('addedPages');
       let addedFeatures: string[] = [];
@@ -115,51 +113,19 @@ export default function Chat() {
         }
       }
 
-      const assumptionText = addedFeatures.length > 0 
-        ? `Assume there are results for the following features: ${addedFeatures.join(', ')}. Provide analysis accordingly.\n` 
-        : '';
+      const history = [...messages, userMessage]
+        .filter((m) => !m.failed && m.content !== "typing")
+        .map(({ role, content }) => ({ role, content }));
+      const reply = await sendChat(history, addedFeatures);
 
-      const instructions = "Provide a concise, witty response using markdown for titles and better separations. Limit each section to about 3 lines. Minimize emojis.\n";
-
-      if (input.toLowerCase().includes("book")) {
-        const pdfUrl =
-          "https://discovery.ucl.ac.uk/id/eprint/10089234/1/343019_3_art_0_py4t4l_convrt.pdf";
-        const response = await fetch(pdfUrl);
-        const arrayBuffer = await response.arrayBuffer();
-        const base64Data = arrayBufferToBase64(arrayBuffer);
-
-        contents.push({
-          role: "user",
-          parts: [
-            { inlineData: { mimeType: "application/pdf", data: base64Data } },
-            { text: docs.length ? docs.join("\n") + "\n" : "" },
-            { text: instructions + assumptionText + `Question: ${input}` },
-          ],
-        });
-      } else {
-        contents.push({
-          role: "user",
-          parts: [
-            { text: docs.length ? docs.join("\n") + "\n" : "" },
-            { text: instructions + assumptionText + `Question: ${input}` },
-          ],
-        });
-      }
-
-      const response = await ai.models.generateContent({
-        model: "gemini-2.5-flash",
-        contents,
-      });
-
-      const assistantMessage: Message = {
-        role: "assistant",
-        content: response.text || "No response",
-      };
       // Replace loading message with actual response
-      setMessages((prev) => prev.slice(0, -1).concat(assistantMessage));
+      setMessages((prev) => prev.slice(0, -1).concat({ role: "assistant", content: reply }));
     } catch (err) {
-      console.error("Gemini Error:", err);
-      const errorMessage: Message = { role: "assistant", content: "Error: could not get response" };
+      const errorMessage: Message = {
+        role: "assistant",
+        content: `Error: ${err instanceof Error ? err.message : "could not get a response"}`,
+        failed: true,
+      };
       setMessages((prev) => prev.slice(0, -1).concat(errorMessage));
     } finally {
       setLoading(false);
@@ -174,9 +140,11 @@ export default function Chat() {
           <p className="text-gray-500 text-sm">Conversational AI for medical insights</p>
         </div>
       </div>
-      {!ai && (
+      {(chatStatus === "noKey" || chatStatus === "offline") && (
         <p className="mx-auto mb-4 max-w-xl rounded-lg border border-yellow-300 bg-yellow-50 px-4 py-2 text-center text-sm text-yellow-800">
-          Chat is off: set VITE_GEMINI_API_KEY in .env.local and restart the dev server.
+          {chatStatus === "noKey"
+            ? "Chat is off: set GROQ_API_KEY in server/.env and restart the server."
+            : "Chat is off: the GAIA server is not reachable. Start it with python server/app.py."}
         </p>
       )}
       {/* Clear Chat Button */}
@@ -227,7 +195,7 @@ export default function Chat() {
         />
         <button
           onClick={sendMessage}
-          disabled={loading || !ai}
+          disabled={loading || chatStatus !== "ready"}
           className="px-5 py-3 bg-blue-500 text-white rounded-full shadow hover:bg-blue-600 disabled:opacity-50 transition-colors duration-200 flex items-center justify-center"
         >
           {loading ? <span className="animate-pulse">...</span> : "Send"}
@@ -262,26 +230,4 @@ export default function Chat() {
       </div>
     </div>
   );
-}
-
-// === Mock RAG Retrieval ===
-async function fetchRelevantDocs(query: string): Promise<string[]> {
-  const docs = [
-    "Doc1: Google Gemini API supports conversational AI with RAG context.",
-    "Doc2: React + Vite + Tailwind is fast for UIs.",
-    "Doc3: Retrieval-Augmented Generation improves chatbot answers.",
-  ];
-  return docs.filter((d) => d.toLowerCase().includes(query.toLowerCase())).slice(0, 2);
-}
-
-// === Convert ArrayBuffer → Base64 ===
-function arrayBufferToBase64(buffer: ArrayBuffer) {
-  let binary = "";
-  const bytes = new Uint8Array(buffer);
-  const chunkSize = 0x8000;
-  for (let i = 0; i < bytes.length; i += chunkSize) {
-    const chunk = bytes.subarray(i, i + chunkSize);
-    binary += String.fromCharCode.apply(null, Array.from(chunk));
-  }
-  return btoa(binary);
 }

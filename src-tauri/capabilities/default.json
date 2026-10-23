@@ -66,15 +66,6 @@
 			"identifier": "http:default",
 			"allow": [
 				{
-					"url": "https://discovery.ucl.ac.uk/id/eprint/**"
-				},
-				{
-					"url": "https://generativelanguage.googleapis.com/v1beta/models/**"
-				},
-				{
-					"url": "https://gemini.googleapis.com/v1/chat:generate"
-				},
-				{
 					"url": "http://localhost:5600/*"
 				},
 				{
