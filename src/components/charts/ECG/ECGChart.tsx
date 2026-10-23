@@ -98,6 +98,7 @@ export default function ECGChartInteractive({ data, error }: Props) {
               stroke="var(--color-foreground)"
               strokeWidth={1.8}
               dot={false}
+              isAnimationActive={false}
             />
           </LineChart>
         </ChartContainer>
