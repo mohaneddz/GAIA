@@ -4,7 +4,7 @@
 </h1>
 
 GAIA (AI4HEALTH) is a desktop-first health-tech project built with **Tauri + React + TypeScript + Vite**.
-It combines a modern frontend with native desktop packaging for fast local workflows.
+It pairs a multi-specialty clinical dashboard with a small Python server that generates the ECG and EEG signals the dashboard plots.
 
 ---
 
@@ -24,38 +24,115 @@ It combines a modern frontend with native desktop packaging for fast local workf
 ![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)
 ![Rust](https://img.shields.io/badge/Rust-000000?style=for-the-badge&logo=rust)
 ![pnpm](https://img.shields.io/badge/pnpm-F69220?style=for-the-badge&logo=pnpm&logoColor=white)
+![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![Flask](https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=flask)
+![NumPy](https://img.shields.io/badge/NumPy-013243?style=for-the-badge&logo=numpy)
 
 ---
 
-## Project Structure
+## Architecture
 
 ```text
-src/                 # React UI
-src-tauri/           # Tauri + Rust app shell
+React dashboard (Vite, port 1420)          Flask signal server (server/, port 5600)
+  ECG page ── GET /api/ecg every 10 s ──►    signals/ecg.py  9-lead ECG + HR, R-R spread
+  EEG page ── GET /api/eeg every 10 s ──►    signals/eeg.py  12-channel EEG + band powers
+  Chat page ── @google/genai ──► Gemini API (browser-side, needs a key)
+Tauri shell (src-tauri/) wraps the React app; it does not start the Python server.
 ```
 
----
+```text
+src/                 React UI (routes, chart components, signal API client)
+server/              Flask API and the ECG/EEG generators, with pytest tests
+src-tauri/           Tauri v2 shell and capabilities
+```
 
-## Status
+### Signal server
 
-The frontend is the developed half of this hackathon build: a full routed dashboard shell exists for cardiology, neurology, pathology, pulmonology, radiology, general medicine, and monitoring, with real ECG/EEG-style charting (Recharts) and Google Gemini (`@google/genai`) integration for AI-assisted features.
+`server/` generates synthetic physiological signals on request. Each call returns a fresh 10-second window at 250 Hz, plus values measured back from that window:
 
-The bundled `server/app.py` Flask backend, however, is only a two-route "Hello, World!" stub (`/` and `/hello/<name>`) — it has no real endpoints and isn't wired into the frontend. Any data shown in the dashboards is frontend-side (mocked or client-side generated), not served by a real backend.
+| Endpoint | Returns | Measured from the signal |
+| --- | --- | --- |
+| `GET /api/health` | `{"status": "ok"}` | |
+| `GET /api/ecg` | 9 leads, 2500 samples | heart rate and R-R standard deviation, from R-peak detection on lead 1 |
+| `GET /api/eeg` | 12 channels (Fp1 to T4), 2500 samples | alpha/beta power ratio, relative theta and delta power, channel RMS variability, from an FFT |
+
+Query parameters, all optional: `duration` (1-60 s), `fs` (100-1000 Hz), `seed` (repeatable output), and for ECG `hr` (30-200 bpm) and `hrv` (R-R jitter in ms). Out-of-range values get a 400 with an `error` message. CORS is open only to the Vite dev server and the Tauri webview origins.
+
+The generators are adapted from **AI4health**, the synthetic ECG/EEG waveform generator written for this project (a local scratch folder, not published). The beat and band models are unchanged; the port returns arrays instead of writing JS files, adds a seedable RNG, and jitters each beat's R-R interval so heart-rate variability is measurable.
+
+### What is live and what is static
+
+Live, from the signal server:
+
+- ECG Interpretation (Cardiology > ECG AI): the waveform viewer, and HR and RR Std in Key Cardiac Metrics.
+- EEG Pattern Recognition (Neurology > EEG AI): the waveform viewer and all four Key Brain Metrics.
+
+If the server is down, those cards say "Signal server is not reachable" instead of showing data.
+
+Still static demo content:
+
+- On the ECG page: ST Dev, QTc, QRS Width and P Corr (the generator does not model those intervals), the events list, ST-segment, tachycardia, trend, lead map, signal-quality and lab-test cards.
+- On the EEG page: everything below Key Brain Metrics.
+- Every other view: home statistics, patients, general medicine, pathology, pulmonology, radiology, monitoring, cognition, and the image tabs. None of them make network calls; there is no ML model behind them.
+
+### Gemini chat
+
+The Chat page (Ask GAIA) is the only feature that calls an AI model. It uses `@google/genai` in the browser to call `gemini-2.5-flash`. Each prompt is built from:
+
+- the question, with instructions to answer briefly in markdown;
+- the names of pages added with the "Add to Folder" button, with an instruction to assume results exist for them;
+- matches from a hardcoded list of three placeholder "documents" (the retrieval step is a stub);
+- if the question contains "book", a PDF downloaded from UCL Discovery through the Tauri HTTP plugin. This only works in the Tauri app, not in `pnpm dev`.
+
+The key comes from `VITE_GEMINI_API_KEY` in `.env.local` (see `.env.example`). Without it, the page shows a notice and the Send button is disabled. Vite inlines `VITE_` variables into the built bundle, so don't distribute a build made with your key set.
 
 ---
 
 ## Getting Started
 
+Signal server (Python 3.11+):
+
+```bash
+cd server
+python -m venv .venv
+source .venv/Scripts/activate   # Git Bash; .venv/bin/activate on macOS/Linux
+pip install -r requirements.txt
+python app.py                 # serves http://127.0.0.1:5600
+```
+
+Dashboard, in a second terminal:
+
 ```bash
 pnpm install
-pnpm tauri dev
+pnpm dev          # browser at http://localhost:1420
+pnpm tauri dev    # or the desktop app
 ```
 
-Frontend-only dev mode:
+Optional `.env.local` at the repo root:
 
 ```bash
-pnpm dev
+VITE_GEMINI_API_KEY=your-key                # enables the Chat page
+VITE_SIGNAL_API_URL=http://127.0.0.1:5600   # if the server runs elsewhere
 ```
+
+Server tests:
+
+```bash
+cd server
+python -m pytest
+```
+
+---
+
+## Live signal views
+
+<p align="center">
+  <img src="docs/screenshots/live-ecg.png" alt="ECG viewer showing a server-generated lead 1 trace with measured heart rate and R-R spread" width="100%">
+</p>
+
+<p align="center">
+  <img src="docs/screenshots/live-eeg.png" alt="EEG viewer showing a server-generated Fp1 channel" width="100%">
+</p>
 
 ---
 
