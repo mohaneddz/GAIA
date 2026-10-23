@@ -1,9 +1,9 @@
-import ClassifierPage from "@/components/vision/ClassifierPage"
+import ToolPage from "@/components/layout/ToolPage"
+import ClassifierWorkbench from "@/components/vision/ClassifierWorkbench"
 
 export default function CellClassification() {
   return (
-    <ClassifierPage
-      modelId="blood"
+    <ToolPage
       title="Blood Cell Classifier"
       subtitle="Eight peripheral blood cell types from a single-cell smear crop"
       useFor={[
@@ -15,6 +15,8 @@ export default function CellClassification() {
         "Trained on donors without infection or haematological disease, so it has never seen blasts or atypical lymphocytes.",
         "Source images are 28 px, so nuclear chromatin detail is mostly gone.",
       ]}
-    />
+    >
+      <ClassifierWorkbench modelId="blood" />
+    </ToolPage>
   )
 }

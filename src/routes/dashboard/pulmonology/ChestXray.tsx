@@ -1,9 +1,9 @@
-import ClassifierPage from "@/components/vision/ClassifierPage"
+import ToolPage from "@/components/layout/ToolPage"
+import ClassifierWorkbench from "@/components/vision/ClassifierWorkbench"
 
 export default function ChestXray() {
   return (
-    <ClassifierPage
-      modelId="pneumonia"
+    <ToolPage
       title="Chest X-ray Pneumonia Screen"
       subtitle="Normal versus pneumonia on frontal paediatric radiographs"
       useFor={[
@@ -16,6 +16,8 @@ export default function ChestXray() {
         "Does not separate bacterial from viral pneumonia, and does not report effusion, pneumothorax, lines or devices.",
         "Source images are 128 px, so fine interstitial detail is lost before the model sees it.",
       ]}
-    />
+    >
+      <ClassifierWorkbench modelId="pneumonia" />
+    </ToolPage>
   )
 }

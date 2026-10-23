@@ -1,9 +1,9 @@
-import ClassifierPage from "@/components/vision/ClassifierPage"
+import ToolPage from "@/components/layout/ToolPage"
+import ClassifierWorkbench from "@/components/vision/ClassifierWorkbench"
 
 export default function BreastUltrasound() {
   return (
-    <ClassifierPage
-      modelId="breast"
+    <ToolPage
       title="Breast Ultrasound Classifier"
       subtitle="Malignant versus normal or benign on a single ultrasound frame"
       useFor={[
@@ -15,6 +15,8 @@ export default function BreastUltrasound() {
         "Normal and benign are merged into one class, and no BI-RADS category is produced.",
         "Biopsy, not this model, decides malignancy.",
       ]}
-    />
+    >
+      <ClassifierWorkbench modelId="breast" />
+    </ToolPage>
   )
 }

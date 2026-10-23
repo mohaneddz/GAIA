@@ -1,9 +1,9 @@
-import ClassifierPage from "@/components/vision/ClassifierPage"
+import ToolPage from "@/components/layout/ToolPage"
+import ClassifierWorkbench from "@/components/vision/ClassifierWorkbench"
 
 export default function SkinLesion() {
   return (
-    <ClassifierPage
-      modelId="skin"
+    <ToolPage
       title="Skin Lesion Classifier"
       subtitle="Seven diagnostic categories from a dermatoscopic image"
       useFor={[
@@ -15,6 +15,8 @@ export default function SkinLesion() {
         "About two thirds of the training images are benign nevi, and lighter skin types dominate HAM10000.",
         "Check melanoma recall in the model card before trusting a negative result. Source images are 64 px.",
       ]}
-    />
+    >
+      <ClassifierWorkbench modelId="skin" />
+    </ToolPage>
   )
 }
