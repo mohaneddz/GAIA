@@ -14,9 +14,11 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
-import { chartData } from "@/data/chartData"
+import type { SignalSample } from "@/lib/signalApi"
 
-export default function ECGChartInteractive({ data = chartData }) {
+type Props = { data: SignalSample[] | null; error?: string | null }
+
+export default function ECGChartInteractive({ data, error }: Props) {
   const leads = [
     "lead1",
     "lead2",
@@ -44,7 +46,7 @@ export default function ECGChartInteractive({ data = chartData }) {
         <div className="flex flex-1 flex-col justify-center gap-1 px-6 pb-3 sm:pb-0 mt-4">
           <CardTitle>ECG Channels</CardTitle>
           <CardDescription>
-            Showing 9-lead simulated ECG signals
+            {error && data ? `${error}, showing the last window` : "Showing 9-lead simulated ECG signals"}
           </CardDescription>
         </div>
         <div className="flex overflow-x-auto">
@@ -62,6 +64,11 @@ export default function ECGChartInteractive({ data = chartData }) {
       </CardHeader>
 
       <CardContent className="px-2 sm:p-6">
+        {!data ? (
+          <div className="flex h-[250px] items-center justify-center text-sm text-muted-foreground">
+            {error ?? "Loading signal..."}
+          </div>
+        ) : (
         <ChartContainer
           config={chartConfig}
           className="aspect-auto h-[250px] w-full"
@@ -94,6 +101,7 @@ export default function ECGChartInteractive({ data = chartData }) {
             />
           </LineChart>
         </ChartContainer>
+        )}
       </CardContent>
     </Card>
   )

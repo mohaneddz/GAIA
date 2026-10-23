@@ -12,9 +12,11 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
-import { chartData } from "@/data/eegData"
+import type { SignalSample } from "@/lib/signalApi"
 
-export default function EEGChartInteractive({ data = chartData }) {
+type Props = { data: SignalSample[] | null; error?: string | null }
+
+export default function EEGChartInteractive({ data, error }: Props) {
   const channels = [
     "Fp1",
     "Fp2",
@@ -45,7 +47,7 @@ export default function EEGChartInteractive({ data = chartData }) {
         <div className="flex flex-1 flex-col justify-center gap-1 px-6 pb-3 sm:pb-0 mt-4">
           <CardTitle>EEG Channels</CardTitle>
           <CardDescription>
-            Showing 12-channel simulated EEG signals
+            {error && data ? `${error}, showing the last window` : "Showing 12-channel simulated EEG signals"}
           </CardDescription>
         </div>
         <div className="flex overflow-x-auto">
@@ -63,6 +65,11 @@ export default function EEGChartInteractive({ data = chartData }) {
       </CardHeader>
 
       <CardContent className="px-2 sm:p-6">
+        {!data ? (
+          <div className="flex h-[250px] items-center justify-center text-sm text-muted-foreground">
+            {error ?? "Loading signal..."}
+          </div>
+        ) : (
         <ChartContainer
           config={chartConfig}
           className="aspect-auto h-[250px] w-full"
@@ -95,6 +102,7 @@ export default function EEGChartInteractive({ data = chartData }) {
             />
           </LineChart>
         </ChartContainer>
+        )}
       </CardContent>
     </Card>
   )

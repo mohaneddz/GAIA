@@ -2,6 +2,8 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/com
 import { HeartPulse, Activity, TrendingUp, LayoutGrid, AlertTriangle } from "lucide-react"
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useSignalWindow } from "@/hooks/useSignalWindow";
+import { fetchEcg } from "@/lib/signalApi";
 
 // Core Components (Existing and Provided)
 import ECGChart from "@/components/charts/ECG/ECGChart";
@@ -18,6 +20,8 @@ import ECGLabTestsCard from "@/components/charts/ECG/ECGLabTestsCard";
 
 
 const EcgAi = () => {
+  const { data, error } = useSignalWindow(fetchEcg);
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 p-8">
       <div className="text-center col-span-2">
@@ -48,7 +52,7 @@ const EcgAi = () => {
           <CardDescription>12-Lead Display with P-QRS-T complex segmentation</CardDescription>
         </CardHeader>
         <CardContent>
-          <ECGChart />
+          <ECGChart data={data?.samples ?? null} error={error} />
         </CardContent>
       </Card>
 
@@ -61,7 +65,7 @@ const EcgAi = () => {
           <CardDescription>HR, QTc, ST-Deviation, and Rhythm Variability</CardDescription>
         </CardHeader>
         <CardContent>
-          <StatsCard />
+          <StatsCard vitals={data?.vitals ?? null} />
         </CardContent>
       </Card>
 
