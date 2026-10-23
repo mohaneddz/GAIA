@@ -1,4 +1,6 @@
 flask>=3.0
 numpy>=2.0
+onnxruntime>=1.18
+pillow>=10.0
 python-dotenv>=1.0
 pytest>=8.0

@@ -2,15 +2,18 @@ import os
 from pathlib import Path
 
 from dotenv import load_dotenv
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, send_file
+from PIL import Image, UnidentifiedImageError
 
 load_dotenv(Path(__file__).with_name(".env"))
 
 from chat import ChatUnavailable, chat_enabled, complete
 from signals.ecg import LEAD_NAMES, ecg_vitals, generate_ecg
 from signals.eeg import CHANNEL_NAMES, eeg_metrics, generate_eeg
+from vision import REGISTRY, UnknownModel, get_model, sample_path
 
 app = Flask(__name__)
+app.config["MAX_CONTENT_LENGTH"] = 10 * 1024 * 1024
 
 # Vite dev server, plus the origins the Tauri webview uses on each platform.
 ALLOWED_ORIGINS = {
@@ -39,6 +42,16 @@ class BadParam(ValueError):
 @app.errorhandler(BadParam)
 def bad_param(error):
     return jsonify({"error": str(error)}), 400
+
+
+@app.errorhandler(UnknownModel)
+def unknown_model(error):
+    return jsonify({"error": f"unknown model or sample: {error.args[0]}"}), 404
+
+
+@app.errorhandler(413)
+def too_large(_error):
+    return jsonify({"error": "image must be under 10 MB"}), 413
 
 
 def number_param(name, default, low, high):
@@ -140,6 +153,40 @@ def chat():
     except ChatUnavailable as error:
         return jsonify({"error": str(error)}), 503
     return jsonify({"reply": reply})
+
+
+@app.get("/api/models")
+def list_models():
+    return jsonify([model.card for model in REGISTRY.values()])
+
+
+@app.get("/api/models/<model_id>")
+def model_card(model_id):
+    return jsonify(get_model(model_id).card)
+
+
+@app.get("/api/models/<model_id>/samples/<file_name>")
+def model_sample(model_id, file_name):
+    return send_file(sample_path(model_id, file_name), mimetype="image/png")
+
+
+@app.post("/api/models/<model_id>/predict")
+def predict(model_id):
+    model = get_model(model_id)
+    upload = request.files.get("image")
+    if upload is not None:
+        source = upload.stream
+    else:
+        body = request.get_json(silent=True) or {}
+        if not isinstance(body.get("sample"), str):
+            raise BadParam("send an image file field, or JSON with a sample file name")
+        source = sample_path(model_id, body["sample"])
+    try:
+        with Image.open(source) as image:
+            image.load()
+            return jsonify(model.predict(image))
+    except UnidentifiedImageError:
+        raise BadParam("could not read the file as an image")
 
 
 if __name__ == "__main__":
