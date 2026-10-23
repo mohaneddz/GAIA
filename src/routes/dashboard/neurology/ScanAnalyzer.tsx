@@ -13,7 +13,7 @@ export default function ScanAnalyzer() {
       limits={[
         "Works on one 2D slice, not a volume. \"No tumour\" only means none is visible on that slice.",
         "Gives no segmentation, size, grade or enhancement pattern.",
-        "The source dataset's test folder was collected differently from its training folder, so test accuracy is lower than validation accuracy. The model card reports the test figures.",
+        "Gliomas are the weak spot. Validation accuracy is 99%, but on the dataset's separately collected test folder only about a third of gliomas are called correctly, and most of the rest come out as meningioma. Do not use a negative glioma call to rule one out.",
       ]}
     >
       <ClassifierWorkbench modelId="brain" />
