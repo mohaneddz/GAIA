@@ -1,26 +1,20 @@
 "use client"
 // Updated icons to be more relevant to cardiac function and rhythm
 import { Zap, HeartPulse, Clock, TrendingDown, Maximize, Target } from "lucide-react"
+import type { EcgVitals } from "@/lib/signalApi"
 
 export const description = "Statistical summary card"
 export const iframeHeight = "600px"
 export const containerClassName =
   "[&>div]:w-full [&>div]:max-w-md flex items-center justify-center min-h-svh"
 
-// Example ECG statistical values (replace with computed values from data as needed)
-const stats = {
-  // ST-segment Amplitude Deviation (mm)
-  ST_dev: 1.2, 
-  // Corrected QT Interval (ms)
+// HR and RR_std are measured from the signal server's current window. The other
+// four are fixed demo values: the generator does not model those intervals.
+const staticStats = {
+  ST_dev: 1.2,
   QTc: 485,
-  // Heart Rate (bpm)
-  HR: 85,
-  // QRS Complex Width (ms)
   QRS_width: 105,
-  // R-R Interval Standard Deviation (ms) - Rhythm regularity
-  RR_std: 35.8,
-  // P-wave Correlation Index (Unitless, e.g., 0-1) - Consistency of P-waves
-  P_corr: 0.25, 
+  P_corr: 0.25,
 }
 
 const statIcons = {
@@ -32,7 +26,16 @@ const statIcons = {
   P_corr: Target, // For consistency/correlation
 }
 
-export default function ECGStatsChart() {
+export default function ECGStatsChart({ vitals }: { vitals: EcgVitals | null }) {
+  const stats: Record<string, number | null> = {
+    ST_dev: staticStats.ST_dev,
+    QTc: staticStats.QTc,
+    HR: vitals?.heartRate ?? null,
+    QRS_width: staticStats.QRS_width,
+    RR_std: vitals?.rrStdMs ?? null,
+    P_corr: staticStats.P_corr,
+  }
+
   // Helper function to determine if a stat is good or dangerous
   const getValueColor = (key: string, value: number) => {
     switch (key) {
@@ -61,7 +64,9 @@ export default function ECGStatsChart() {
             // Format for display
             let displayValue = '';
             let unit = '';
-            if (key === 'ST_dev') {
+            if (value === null) {
+              displayValue = '--';
+            } else if (key === 'ST_dev') {
               displayValue = value.toFixed(1);
               unit = 'mm';
             } else if (key === 'QTc' || key === 'QRS_width' || key === 'RR_std') {
@@ -75,7 +80,7 @@ export default function ECGStatsChart() {
               unit = '';
             }
             
-            const valueColor = getValueColor(key, value);
+            const valueColor = value === null ? 'text-muted-foreground' : getValueColor(key, value);
             
             return (
               <div key={key} className="flex flex-col items-center justify-center p-4 bg-background border rounded-lg shadow-sm hover:shadow-md hover:bg-muted/20 hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer">

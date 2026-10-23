@@ -2,6 +2,8 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/com
 import { HeartPulse, Activity, TrendingUp, LayoutGrid, AlertTriangle } from "lucide-react"
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useSignalWindow } from "@/hooks/useSignalWindow";
+import { fetchEeg } from "@/lib/signalApi";
 
 // Core Components (EEG-specific)
 import EEGChart from "@/components/charts/EEG/EEGChart";
@@ -16,13 +18,15 @@ import EEGSeizureClassifier from "@/components/charts/EEG/EEGSeizureClassifier";
 import EEGSampleQuality from "@/components/charts/EEG/EEGSampleQuality";
 import EEGLabTestsCard from "@/components/charts/EEG/EEGLabTestsCard";
 
-const EcgAi = () => {
+const EegAi = () => {
+  const { data, error } = useSignalWindow(fetchEeg);
+
   return (
     <div className="full grid grid-cols-1 lg:grid-cols-2 gap-6 p-8">
 
       <div className="w-full text-center col-span-2">
         <h1 className="text-3xl font-bold text-gray-800">AI EEG Analysis</h1>
-        <p className="text-gray-500">Automated detection and analysis of ECG signals</p>
+        <p className="text-gray-500">Automated detection and analysis of EEG signals</p>
       </div>
 
       {/* New Input Section */}
@@ -49,7 +53,7 @@ const EcgAi = () => {
           <CardDescription>Multi-channel display with alpha, beta, theta wave segmentation</CardDescription>
         </CardHeader>
         <CardContent>
-          <EEGChart />
+          <EEGChart data={data?.samples ?? null} error={error} />
         </CardContent>
       </Card>
 
@@ -62,7 +66,7 @@ const EcgAi = () => {
           <CardDescription>Alpha/Beta ratio, Theta power, and Wave Variability</CardDescription>
         </CardHeader>
         <CardContent>
-          <EEGStatsChart />
+          <EEGStatsChart metrics={data?.metrics ?? null} />
         </CardContent>
       </Card>
 
@@ -122,4 +126,4 @@ const EcgAi = () => {
   );
 };
 
-export default EcgAi;
+export default EegAi;
