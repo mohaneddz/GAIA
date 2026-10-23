@@ -33,8 +33,10 @@ export type EegWindow = {
   metrics: EegMetrics
 }
 
-async function getJson<T>(path: string, signal?: AbortSignal): Promise<T> {
-  const response = await fetch(`${signalApiUrl}${path}`, { signal })
+export type ChatTurn = { role: "user" | "assistant"; content: string }
+
+async function getJson<T>(path: string, signal?: AbortSignal, init?: RequestInit): Promise<T> {
+  const response = await fetch(`${signalApiUrl}${path}`, { signal, ...init })
   if (!response.ok) {
     const body = await response.json().catch(() => null)
     throw new Error(body?.error ?? `Signal server returned ${response.status}`)
@@ -44,3 +46,13 @@ async function getJson<T>(path: string, signal?: AbortSignal): Promise<T> {
 
 export const fetchEcg = (signal?: AbortSignal) => getJson<EcgWindow>("/api/ecg", signal)
 export const fetchEeg = (signal?: AbortSignal) => getJson<EegWindow>("/api/eeg", signal)
+export const fetchHealth = () => getJson<{ status: string; chat: boolean }>("/api/health")
+
+export const sendChat = async (messages: ChatTurn[], addedFeatures: string[]) => {
+  const body = await getJson<{ reply: string }>("/api/chat", undefined, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ messages, addedFeatures }),
+  })
+  return body.reply
+}

@@ -1,7 +1,12 @@
 import os
+from pathlib import Path
 
+from dotenv import load_dotenv
 from flask import Flask, jsonify, request
 
+load_dotenv(Path(__file__).with_name(".env"))
+
+from chat import ChatUnavailable, chat_enabled, complete
 from signals.ecg import LEAD_NAMES, ecg_vitals, generate_ecg
 from signals.eeg import CHANNEL_NAMES, eeg_metrics, generate_eeg
 
@@ -22,6 +27,8 @@ def allow_dashboard_origin(response):
     if origin in ALLOWED_ORIGINS:
         response.headers["Access-Control-Allow-Origin"] = origin
         response.headers["Vary"] = "Origin"
+        response.headers["Access-Control-Allow-Headers"] = "Content-Type"
+        response.headers["Access-Control-Allow-Methods"] = "GET, POST"
     return response
 
 
@@ -67,7 +74,7 @@ def rows(times, names, values):
 
 @app.get("/api/health")
 def health():
-    return jsonify({"status": "ok"})
+    return jsonify({"status": "ok", "chat": chat_enabled()})
 
 
 @app.get("/api/ecg")
@@ -100,6 +107,39 @@ def eeg():
         "samples": rows(times, CHANNEL_NAMES, channels),
         "metrics": eeg_metrics(channels, fs),
     })
+
+
+def chat_history(body):
+    messages = body.get("messages") if isinstance(body, dict) else None
+    if not isinstance(messages, list) or not messages:
+        raise BadParam("messages must be a non-empty list")
+    history = []
+    for message in messages:
+        if (
+            not isinstance(message, dict)
+            or message.get("role") not in ("user", "assistant")
+            or not isinstance(message.get("content"), str)
+        ):
+            raise BadParam("each message needs a role of user or assistant and string content")
+        history.append({"role": message["role"], "content": message["content"]})
+    if history[-1]["role"] != "user":
+        raise BadParam("the last message must be from the user")
+    return history
+
+
+@app.post("/api/chat")
+def chat():
+    body = request.get_json(silent=True)
+    history = chat_history(body)
+    features = body.get("addedFeatures", [])
+    if not isinstance(features, list) or not all(isinstance(name, str) for name in features):
+        raise BadParam("addedFeatures must be a list of strings")
+
+    try:
+        reply = complete(history, features)
+    except ChatUnavailable as error:
+        return jsonify({"error": str(error)}), 503
+    return jsonify({"reply": reply})
 
 
 if __name__ == "__main__":

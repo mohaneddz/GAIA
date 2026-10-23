@@ -36,13 +36,13 @@ It pairs a multi-specialty clinical dashboard with a small Python server that ge
 React dashboard (Vite, port 1420)          Flask signal server (server/, port 5600)
   ECG page ── GET /api/ecg every 10 s ──►    signals/ecg.py  9-lead ECG + HR, R-R spread
   EEG page ── GET /api/eeg every 10 s ──►    signals/eeg.py  12-channel EEG + band powers
-  Chat page ── @google/genai ──► Gemini API (browser-side, needs a key)
+  Chat page ── POST /api/chat ──────────►    chat.py  forwards to Groq (key stays server-side)
 Tauri shell (src-tauri/) wraps the React app; it does not start the Python server.
 ```
 
 ```text
 src/                 React UI (routes, chart components, signal API client)
-server/              Flask API and the ECG/EEG generators, with pytest tests
+server/              Flask API: ECG/EEG generators, Groq chat proxy, pytest tests
 src-tauri/           Tauri v2 shell and capabilities
 ```
 
@@ -52,7 +52,7 @@ src-tauri/           Tauri v2 shell and capabilities
 
 | Endpoint | Returns | Measured from the signal |
 | --- | --- | --- |
-| `GET /api/health` | `{"status": "ok"}` | |
+| `GET /api/health` | `{"status": "ok", "chat": true}` (`chat` is false when no Groq key is set) | |
 | `GET /api/ecg` | 9 leads, 2500 samples | heart rate and R-R standard deviation, from R-peak detection on lead 1 |
 | `GET /api/eeg` | 12 channels (Fp1 to T4), 2500 samples | alpha/beta power ratio, relative theta and delta power, channel RMS variability, from an FFT |
 
@@ -75,16 +75,11 @@ Still static demo content:
 - On the EEG page: everything below Key Brain Metrics.
 - Every other view: home statistics, patients, general medicine, pathology, pulmonology, radiology, monitoring, cognition, and the image tabs. None of them make network calls; there is no ML model behind them.
 
-### Gemini chat
+### Chat
 
-The Chat page (Ask GAIA) is the only feature that calls an AI model. It uses `@google/genai` in the browser to call `gemini-2.5-flash`. Each prompt is built from:
+The Chat page (Ask GAIA) is the only feature that calls an AI model. The browser posts the conversation to `POST /api/chat`. The server adds a system prompt and forwards the last 12 turns to Groq's chat completions API. The default model is `openai/gpt-oss-120b`; set `GROQ_MODEL` to change it. The system prompt also lists the pages pinned with "Add to Folder", with an instruction to assume results exist for them.
 
-- the question, with instructions to answer briefly in markdown;
-- the names of pages added with the "Add to Folder" button, with an instruction to assume results exist for them;
-- matches from a hardcoded list of three placeholder "documents" (the retrieval step is a stub);
-- if the question contains "book", a PDF downloaded from UCL Discovery through the Tauri HTTP plugin. This only works in the Tauri app, not in `pnpm dev`.
-
-The key comes from `VITE_GEMINI_API_KEY` in `.env.local` (see `.env.example`). Without it, the page shows a notice and the Send button is disabled. Vite inlines `VITE_` variables into the built bundle, so don't distribute a build made with your key set.
+The key lives in `server/.env` as `GROQ_API_KEY` (see `server/.env.example`). That file is gitignored and only the Python server reads it, so the key is never in the frontend bundle. Without a key, `/api/chat` returns 503 and the page shows a notice with Send disabled. It shows a different notice when the server isn't running.
 
 ---
 
@@ -108,11 +103,16 @@ pnpm dev          # browser at http://localhost:1420
 pnpm tauri dev    # or the desktop app
 ```
 
-Optional `.env.local` at the repo root:
+Chat needs a Groq key in `server/.env` (create a key at console.groq.com):
 
 ```bash
-VITE_GEMINI_API_KEY=your-key                # enables the Chat page
-VITE_SIGNAL_API_URL=http://127.0.0.1:5600   # if the server runs elsewhere
+GROQ_API_KEY=your-key
+```
+
+Optional `.env.local` at the repo root, if the server runs elsewhere:
+
+```bash
+VITE_SIGNAL_API_URL=http://127.0.0.1:5600
 ```
 
 Server tests:
