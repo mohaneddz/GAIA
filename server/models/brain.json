@@ -1,0 +1,281 @@
+{
+  "id": "brain",
+  "title": "Brain MRI tumour classifier",
+  "modality": "Brain MRI (T1 contrast, mixed planes)",
+  "architecture": "MobileNetV3-Small (ImageNet-pretrained) + global-average-pool linear head",
+  "parameters": 929316,
+  "onnxBytes": 3726934,
+  "input": {
+    "size": 224,
+    "mean": [
+      0.485,
+      0.456,
+      0.406
+    ],
+    "std": [
+      0.229,
+      0.224,
+      0.225
+    ]
+  },
+  "classes": [
+    {
+      "name": "Glioma",
+      "description": "Tumour of glial cells, usually intra-axial within the brain parenchyma."
+    },
+    {
+      "name": "Meningioma",
+      "description": "Extra-axial tumour arising from the meninges; mostly benign."
+    },
+    {
+      "name": "No tumour",
+      "description": "No tumour visible on this slice."
+    },
+    {
+      "name": "Pituitary tumour",
+      "description": "Sellar mass, usually a pituitary adenoma."
+    }
+  ],
+  "dataset": {
+    "name": "Brain Tumor Classification (MRI)",
+    "url": "https://www.kaggle.com/datasets/sartajbhuvaji/brain-tumor-classification-mri",
+    "license": "MIT",
+    "citation": "Bhuvaji et al., Kaggle 2020",
+    "splits": {
+      "train": 2585,
+      "val": 285,
+      "test": 394
+    }
+  },
+  "training": {
+    "epochs": 25,
+    "bestValBalancedAccuracy": 0.9878,
+    "seconds": 60,
+    "device": "NVIDIA GeForce RTX 4070 Laptop GPU",
+    "onnxMaxLogitDrift": 1.0818243026733398e-05,
+    "history": [
+      {
+        "epoch": 1,
+        "trainLoss": 1.3046,
+        "valBalancedAccuracy": 0.25
+      },
+      {
+        "epoch": 2,
+        "trainLoss": 0.9295,
+        "valBalancedAccuracy": 0.3113
+      },
+      {
+        "epoch": 3,
+        "trainLoss": 0.5709,
+        "valBalancedAccuracy": 0.692
+      },
+      {
+        "epoch": 4,
+        "trainLoss": 0.4235,
+        "valBalancedAccuracy": 0.846
+      },
+      {
+        "epoch": 5,
+        "trainLoss": 0.3738,
+        "valBalancedAccuracy": 0.892
+      },
+      {
+        "epoch": 6,
+        "trainLoss": 0.3477,
+        "valBalancedAccuracy": 0.8643
+      },
+      {
+        "epoch": 7,
+        "trainLoss": 0.3225,
+        "valBalancedAccuracy": 0.8884
+      },
+      {
+        "epoch": 8,
+        "trainLoss": 0.288,
+        "valBalancedAccuracy": 0.885
+      },
+      {
+        "epoch": 9,
+        "trainLoss": 0.2953,
+        "valBalancedAccuracy": 0.7606
+      },
+      {
+        "epoch": 10,
+        "trainLoss": 0.2676,
+        "valBalancedAccuracy": 0.9451
+      },
+      {
+        "epoch": 11,
+        "trainLoss": 0.2484,
+        "valBalancedAccuracy": 0.9512
+      },
+      {
+        "epoch": 12,
+        "trainLoss": 0.2534,
+        "valBalancedAccuracy": 0.9326
+      },
+      {
+        "epoch": 13,
+        "trainLoss": 0.2415,
+        "valBalancedAccuracy": 0.954
+      },
+      {
+        "epoch": 14,
+        "trainLoss": 0.2327,
+        "valBalancedAccuracy": 0.9543
+      },
+      {
+        "epoch": 15,
+        "trainLoss": 0.2258,
+        "valBalancedAccuracy": 0.9665
+      },
+      {
+        "epoch": 16,
+        "trainLoss": 0.2254,
+        "valBalancedAccuracy": 0.9817
+      },
+      {
+        "epoch": 17,
+        "trainLoss": 0.2227,
+        "valBalancedAccuracy": 0.9726
+      },
+      {
+        "epoch": 18,
+        "trainLoss": 0.2227,
+        "valBalancedAccuracy": 0.9787
+      },
+      {
+        "epoch": 19,
+        "trainLoss": 0.2238,
+        "valBalancedAccuracy": 0.9878
+      },
+      {
+        "epoch": 20,
+        "trainLoss": 0.2221,
+        "valBalancedAccuracy": 0.9817
+      },
+      {
+        "epoch": 21,
+        "trainLoss": 0.2209,
+        "valBalancedAccuracy": 0.9817
+      },
+      {
+        "epoch": 22,
+        "trainLoss": 0.2193,
+        "valBalancedAccuracy": 0.9787
+      },
+      {
+        "epoch": 23,
+        "trainLoss": 0.2218,
+        "valBalancedAccuracy": 0.9848
+      },
+      {
+        "epoch": 24,
+        "trainLoss": 0.2195,
+        "valBalancedAccuracy": 0.9878
+      },
+      {
+        "epoch": 25,
+        "trainLoss": 0.2196,
+        "valBalancedAccuracy": 0.9878
+      }
+    ],
+    "trainedAt": "2026-10-23"
+  },
+  "metrics": {
+    "accuracy": 0.835,
+    "balancedAccuracy": 0.8378,
+    "macroF1": 0.8119,
+    "auc": 0.9509,
+    "perClass": [
+      {
+        "name": "Glioma",
+        "precision": 1.0,
+        "recall": 0.36,
+        "f1": 0.5294,
+        "support": 100
+      },
+      {
+        "name": "Meningioma",
+        "precision": 0.7308,
+        "recall": 0.9913,
+        "f1": 0.8413,
+        "support": 115
+      },
+      {
+        "name": "No tumour",
+        "precision": 0.8974,
+        "recall": 1.0,
+        "f1": 0.9459,
+        "support": 105
+      },
+      {
+        "name": "Pituitary tumour",
+        "precision": 0.8706,
+        "recall": 1.0,
+        "f1": 0.9308,
+        "support": 74
+      }
+    ],
+    "confusionMatrix": [
+      [
+        36,
+        42,
+        12,
+        10
+      ],
+      [
+        0,
+        114,
+        0,
+        1
+      ],
+      [
+        0,
+        0,
+        105,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        74
+      ]
+    ]
+  },
+  "samples": [
+    {
+      "file": "0_84.png",
+      "label": 0
+    },
+    {
+      "file": "0_63.png",
+      "label": 0
+    },
+    {
+      "file": "1_135.png",
+      "label": 1
+    },
+    {
+      "file": "1_130.png",
+      "label": 1
+    },
+    {
+      "file": "2_216.png",
+      "label": 2
+    },
+    {
+      "file": "2_222.png",
+      "label": 2
+    },
+    {
+      "file": "3_379.png",
+      "label": 3
+    },
+    {
+      "file": "3_368.png",
+      "label": 3
+    }
+  ]
+}

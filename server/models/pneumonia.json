@@ -1,0 +1,227 @@
+{
+  "id": "pneumonia",
+  "title": "Chest X-ray pneumonia screen",
+  "modality": "Chest X-ray (paediatric, frontal)",
+  "architecture": "MobileNetV3-Small (ImageNet-pretrained) + global-average-pool linear head",
+  "parameters": 928162,
+  "onnxBytes": 3722318,
+  "input": {
+    "size": 224,
+    "mean": [
+      0.485,
+      0.456,
+      0.406
+    ],
+    "std": [
+      0.229,
+      0.224,
+      0.225
+    ]
+  },
+  "classes": [
+    {
+      "name": "Normal",
+      "description": "No radiographic sign of pneumonia."
+    },
+    {
+      "name": "Pneumonia",
+      "description": "Opacities consistent with bacterial or viral pneumonia."
+    }
+  ],
+  "dataset": {
+    "name": "PneumoniaMNIST (128 px)",
+    "url": "https://medmnist.com/",
+    "license": "CC BY 4.0",
+    "citation": "Yang et al., MedMNIST v2, Scientific Data 2023; Kermany et al., Cell 2018",
+    "splits": {
+      "train": 4708,
+      "val": 524,
+      "test": 624
+    }
+  },
+  "training": {
+    "epochs": 25,
+    "bestValBalancedAccuracy": 0.9963,
+    "seconds": 119,
+    "device": "NVIDIA GeForce RTX 4070 Laptop GPU",
+    "onnxMaxLogitDrift": 3.814697265625e-06,
+    "history": [
+      {
+        "epoch": 1,
+        "trainLoss": 0.45,
+        "valBalancedAccuracy": 0.7823
+      },
+      {
+        "epoch": 2,
+        "trainLoss": 0.2617,
+        "valBalancedAccuracy": 0.9388
+      },
+      {
+        "epoch": 3,
+        "trainLoss": 0.2192,
+        "valBalancedAccuracy": 0.8863
+      },
+      {
+        "epoch": 4,
+        "trainLoss": 0.2065,
+        "valBalancedAccuracy": 0.9218
+      },
+      {
+        "epoch": 5,
+        "trainLoss": 0.1967,
+        "valBalancedAccuracy": 0.914
+      },
+      {
+        "epoch": 6,
+        "trainLoss": 0.2039,
+        "valBalancedAccuracy": 0.9493
+      },
+      {
+        "epoch": 7,
+        "trainLoss": 0.1923,
+        "valBalancedAccuracy": 0.9602
+      },
+      {
+        "epoch": 8,
+        "trainLoss": 0.1866,
+        "valBalancedAccuracy": 0.6852
+      },
+      {
+        "epoch": 9,
+        "trainLoss": 0.1853,
+        "valBalancedAccuracy": 0.9719
+      },
+      {
+        "epoch": 10,
+        "trainLoss": 0.1769,
+        "valBalancedAccuracy": 0.9
+      },
+      {
+        "epoch": 11,
+        "trainLoss": 0.1738,
+        "valBalancedAccuracy": 0.9875
+      },
+      {
+        "epoch": 12,
+        "trainLoss": 0.1712,
+        "valBalancedAccuracy": 0.9487
+      },
+      {
+        "epoch": 13,
+        "trainLoss": 0.1656,
+        "valBalancedAccuracy": 0.9735
+      },
+      {
+        "epoch": 14,
+        "trainLoss": 0.1591,
+        "valBalancedAccuracy": 0.9849
+      },
+      {
+        "epoch": 15,
+        "trainLoss": 0.1609,
+        "valBalancedAccuracy": 0.9924
+      },
+      {
+        "epoch": 16,
+        "trainLoss": 0.1559,
+        "valBalancedAccuracy": 0.9936
+      },
+      {
+        "epoch": 17,
+        "trainLoss": 0.1555,
+        "valBalancedAccuracy": 0.9963
+      },
+      {
+        "epoch": 18,
+        "trainLoss": 0.1478,
+        "valBalancedAccuracy": 0.9923
+      },
+      {
+        "epoch": 19,
+        "trainLoss": 0.147,
+        "valBalancedAccuracy": 0.9963
+      },
+      {
+        "epoch": 20,
+        "trainLoss": 0.1508,
+        "valBalancedAccuracy": 0.9852
+      },
+      {
+        "epoch": 21,
+        "trainLoss": 0.1466,
+        "valBalancedAccuracy": 0.9876
+      },
+      {
+        "epoch": 22,
+        "trainLoss": 0.1456,
+        "valBalancedAccuracy": 0.995
+      },
+      {
+        "epoch": 23,
+        "trainLoss": 0.1471,
+        "valBalancedAccuracy": 0.9876
+      },
+      {
+        "epoch": 24,
+        "trainLoss": 0.1439,
+        "valBalancedAccuracy": 0.9876
+      },
+      {
+        "epoch": 25,
+        "trainLoss": 0.1445,
+        "valBalancedAccuracy": 0.9876
+      }
+    ],
+    "trainedAt": "2026-10-23"
+  },
+  "metrics": {
+    "accuracy": 0.9375,
+    "balancedAccuracy": 0.9175,
+    "macroF1": 0.9309,
+    "auc": 0.9896,
+    "perClass": [
+      {
+        "name": "Normal",
+        "precision": 0.9949,
+        "recall": 0.8376,
+        "f1": 0.9095,
+        "support": 234
+      },
+      {
+        "name": "Pneumonia",
+        "precision": 0.911,
+        "recall": 0.9974,
+        "f1": 0.9523,
+        "support": 390
+      }
+    ],
+    "confusionMatrix": [
+      [
+        196,
+        38
+      ],
+      [
+        1,
+        389
+      ]
+    ]
+  },
+  "samples": [
+    {
+      "file": "0_519.png",
+      "label": 0
+    },
+    {
+      "file": "0_386.png",
+      "label": 0
+    },
+    {
+      "file": "1_203.png",
+      "label": 1
+    },
+    {
+      "file": "1_178.png",
+      "label": 1
+    }
+  ]
+}

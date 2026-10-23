@@ -1,0 +1,413 @@
+{
+  "id": "blood",
+  "title": "Blood cell classifier",
+  "modality": "Peripheral blood smear, single cell",
+  "architecture": "MobileNetV3-Small (ImageNet-pretrained) + global-average-pool linear head",
+  "parameters": 931624,
+  "onnxBytes": 3736168,
+  "input": {
+    "size": 128,
+    "mean": [
+      0.485,
+      0.456,
+      0.406
+    ],
+    "std": [
+      0.229,
+      0.224,
+      0.225
+    ]
+  },
+  "classes": [
+    {
+      "name": "Basophil",
+      "description": "Granulocyte with dark purple granules; under 1% of white cells."
+    },
+    {
+      "name": "Eosinophil",
+      "description": "Granulocyte with orange-red granules; raised in allergy and parasitic infection."
+    },
+    {
+      "name": "Erythroblast",
+      "description": "Nucleated red cell precursor; abnormal in adult peripheral blood."
+    },
+    {
+      "name": "Immature granulocyte",
+      "description": "Promyelocyte, myelocyte or metamyelocyte; suggests a left shift."
+    },
+    {
+      "name": "Lymphocyte",
+      "description": "Small round cell with a large nucleus; adaptive immunity."
+    },
+    {
+      "name": "Monocyte",
+      "description": "Largest white cell, kidney-shaped nucleus; becomes a macrophage."
+    },
+    {
+      "name": "Neutrophil",
+      "description": "Segmented nucleus; the main responder to bacterial infection."
+    },
+    {
+      "name": "Platelet",
+      "description": "Anucleate fragment involved in clotting."
+    }
+  ],
+  "dataset": {
+    "name": "BloodMNIST (28 px)",
+    "url": "https://medmnist.com/",
+    "license": "CC BY 4.0",
+    "citation": "Yang et al., MedMNIST v2, Scientific Data 2023; Acevedo et al., Data in Brief 2020",
+    "splits": {
+      "train": 11959,
+      "val": 1712,
+      "test": 3421
+    }
+  },
+  "training": {
+    "epochs": 25,
+    "bestValBalancedAccuracy": 0.983,
+    "seconds": 289,
+    "device": "NVIDIA GeForce RTX 4070 Laptop GPU",
+    "onnxMaxLogitDrift": 9.775161743164062e-06,
+    "history": [
+      {
+        "epoch": 1,
+        "trainLoss": 1.5893,
+        "valBalancedAccuracy": 0.5808
+      },
+      {
+        "epoch": 2,
+        "trainLoss": 0.7192,
+        "valBalancedAccuracy": 0.7554
+      },
+      {
+        "epoch": 3,
+        "trainLoss": 0.5162,
+        "valBalancedAccuracy": 0.9176
+      },
+      {
+        "epoch": 4,
+        "trainLoss": 0.4577,
+        "valBalancedAccuracy": 0.9225
+      },
+      {
+        "epoch": 5,
+        "trainLoss": 0.4352,
+        "valBalancedAccuracy": 0.9281
+      },
+      {
+        "epoch": 6,
+        "trainLoss": 0.4143,
+        "valBalancedAccuracy": 0.925
+      },
+      {
+        "epoch": 7,
+        "trainLoss": 0.4051,
+        "valBalancedAccuracy": 0.8792
+      },
+      {
+        "epoch": 8,
+        "trainLoss": 0.3979,
+        "valBalancedAccuracy": 0.8893
+      },
+      {
+        "epoch": 9,
+        "trainLoss": 0.3873,
+        "valBalancedAccuracy": 0.9485
+      },
+      {
+        "epoch": 10,
+        "trainLoss": 0.3703,
+        "valBalancedAccuracy": 0.9406
+      },
+      {
+        "epoch": 11,
+        "trainLoss": 0.3602,
+        "valBalancedAccuracy": 0.8692
+      },
+      {
+        "epoch": 12,
+        "trainLoss": 0.346,
+        "valBalancedAccuracy": 0.9365
+      },
+      {
+        "epoch": 13,
+        "trainLoss": 0.3419,
+        "valBalancedAccuracy": 0.9311
+      },
+      {
+        "epoch": 14,
+        "trainLoss": 0.3378,
+        "valBalancedAccuracy": 0.9794
+      },
+      {
+        "epoch": 15,
+        "trainLoss": 0.3257,
+        "valBalancedAccuracy": 0.9709
+      },
+      {
+        "epoch": 16,
+        "trainLoss": 0.3231,
+        "valBalancedAccuracy": 0.9552
+      },
+      {
+        "epoch": 17,
+        "trainLoss": 0.3157,
+        "valBalancedAccuracy": 0.9723
+      },
+      {
+        "epoch": 18,
+        "trainLoss": 0.3084,
+        "valBalancedAccuracy": 0.9732
+      },
+      {
+        "epoch": 19,
+        "trainLoss": 0.3072,
+        "valBalancedAccuracy": 0.9752
+      },
+      {
+        "epoch": 20,
+        "trainLoss": 0.3042,
+        "valBalancedAccuracy": 0.983
+      },
+      {
+        "epoch": 21,
+        "trainLoss": 0.2984,
+        "valBalancedAccuracy": 0.982
+      },
+      {
+        "epoch": 22,
+        "trainLoss": 0.2985,
+        "valBalancedAccuracy": 0.98
+      },
+      {
+        "epoch": 23,
+        "trainLoss": 0.2951,
+        "valBalancedAccuracy": 0.9816
+      },
+      {
+        "epoch": 24,
+        "trainLoss": 0.2958,
+        "valBalancedAccuracy": 0.9808
+      },
+      {
+        "epoch": 25,
+        "trainLoss": 0.295,
+        "valBalancedAccuracy": 0.9821
+      }
+    ],
+    "trainedAt": "2026-10-23"
+  },
+  "metrics": {
+    "accuracy": 0.9772,
+    "balancedAccuracy": 0.9763,
+    "macroF1": 0.9761,
+    "auc": 0.9979,
+    "perClass": [
+      {
+        "name": "Basophil",
+        "precision": 0.9756,
+        "recall": 0.9836,
+        "f1": 0.9796,
+        "support": 244
+      },
+      {
+        "name": "Eosinophil",
+        "precision": 0.9968,
+        "recall": 0.9952,
+        "f1": 0.996,
+        "support": 624
+      },
+      {
+        "name": "Erythroblast",
+        "precision": 0.9935,
+        "recall": 0.9871,
+        "f1": 0.9903,
+        "support": 311
+      },
+      {
+        "name": "Immature granulocyte",
+        "precision": 0.9451,
+        "recall": 0.9516,
+        "f1": 0.9484,
+        "support": 579
+      },
+      {
+        "name": "Lymphocyte",
+        "precision": 0.9562,
+        "recall": 0.9877,
+        "f1": 0.9717,
+        "support": 243
+      },
+      {
+        "name": "Monocyte",
+        "precision": 0.9635,
+        "recall": 0.9296,
+        "f1": 0.9462,
+        "support": 284
+      },
+      {
+        "name": "Neutrophil",
+        "precision": 0.9774,
+        "recall": 0.976,
+        "f1": 0.9767,
+        "support": 666
+      },
+      {
+        "name": "Platelet",
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 470
+      }
+    ],
+    "confusionMatrix": [
+      [
+        240,
+        0,
+        0,
+        3,
+        0,
+        1,
+        0,
+        0
+      ],
+      [
+        1,
+        621,
+        0,
+        0,
+        0,
+        0,
+        2,
+        0
+      ],
+      [
+        1,
+        0,
+        307,
+        1,
+        1,
+        0,
+        1,
+        0
+      ],
+      [
+        4,
+        1,
+        1,
+        551,
+        2,
+        8,
+        12,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        3,
+        240,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        12,
+        8,
+        264,
+        0,
+        0
+      ],
+      [
+        0,
+        1,
+        1,
+        13,
+        0,
+        1,
+        650,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        470
+      ]
+    ]
+  },
+  "samples": [
+    {
+      "file": "0_2905.png",
+      "label": 0
+    },
+    {
+      "file": "0_2110.png",
+      "label": 0
+    },
+    {
+      "file": "1_1024.png",
+      "label": 1
+    },
+    {
+      "file": "1_896.png",
+      "label": 1
+    },
+    {
+      "file": "2_91.png",
+      "label": 2
+    },
+    {
+      "file": "2_311.png",
+      "label": 2
+    },
+    {
+      "file": "3_2733.png",
+      "label": 3
+    },
+    {
+      "file": "3_2211.png",
+      "label": 3
+    },
+    {
+      "file": "4_1728.png",
+      "label": 4
+    },
+    {
+      "file": "4_2092.png",
+      "label": 4
+    },
+    {
+      "file": "5_2426.png",
+      "label": 5
+    },
+    {
+      "file": "5_2075.png",
+      "label": 5
+    },
+    {
+      "file": "6_3197.png",
+      "label": 6
+    },
+    {
+      "file": "6_1898.png",
+      "label": 6
+    },
+    {
+      "file": "7_2376.png",
+      "label": 7
+    },
+    {
+      "file": "7_2893.png",
+      "label": 7
+    }
+  ]
+}

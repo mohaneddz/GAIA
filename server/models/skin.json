@@ -1,0 +1,377 @@
+{
+  "id": "skin",
+  "title": "Skin lesion classifier",
+  "modality": "Dermatoscopy",
+  "architecture": "MobileNetV3-Small (ImageNet-pretrained) + global-average-pool linear head",
+  "parameters": 931047,
+  "onnxBytes": 3733858,
+  "input": {
+    "size": 192,
+    "mean": [
+      0.485,
+      0.456,
+      0.406
+    ],
+    "std": [
+      0.229,
+      0.224,
+      0.225
+    ]
+  },
+  "classes": [
+    {
+      "name": "Actinic keratosis",
+      "description": "Sun-damage lesion, including intraepithelial carcinoma; can progress to SCC."
+    },
+    {
+      "name": "Basal cell carcinoma",
+      "description": "The most common skin cancer; locally invasive, rarely metastasises."
+    },
+    {
+      "name": "Benign keratosis",
+      "description": "Seborrhoeic keratosis, solar lentigo or lichen planus-like keratosis."
+    },
+    {
+      "name": "Dermatofibroma",
+      "description": "Benign fibrous nodule, often on the legs."
+    },
+    {
+      "name": "Melanoma",
+      "description": "Malignant melanocytic tumour; needs urgent referral."
+    },
+    {
+      "name": "Melanocytic nevus",
+      "description": "Common benign mole."
+    },
+    {
+      "name": "Vascular lesion",
+      "description": "Angioma, angiokeratoma, pyogenic granuloma or haemorrhage."
+    }
+  ],
+  "dataset": {
+    "name": "DermaMNIST (64 px, from HAM10000)",
+    "url": "https://medmnist.com/",
+    "license": "CC BY-NC 4.0",
+    "citation": "Yang et al., MedMNIST v2, Scientific Data 2023; Tschandl et al., Scientific Data 2018",
+    "splits": {
+      "train": 7007,
+      "val": 1003,
+      "test": 2005
+    }
+  },
+  "training": {
+    "epochs": 25,
+    "bestValBalancedAccuracy": 0.7369,
+    "seconds": 178,
+    "device": "NVIDIA GeForce RTX 4070 Laptop GPU",
+    "onnxMaxLogitDrift": 1.52587890625e-05,
+    "history": [
+      {
+        "epoch": 1,
+        "trainLoss": 1.9246,
+        "valBalancedAccuracy": 0.1909
+      },
+      {
+        "epoch": 2,
+        "trainLoss": 1.5395,
+        "valBalancedAccuracy": 0.3373
+      },
+      {
+        "epoch": 3,
+        "trainLoss": 1.3377,
+        "valBalancedAccuracy": 0.6686
+      },
+      {
+        "epoch": 4,
+        "trainLoss": 1.2148,
+        "valBalancedAccuracy": 0.664
+      },
+      {
+        "epoch": 5,
+        "trainLoss": 1.1529,
+        "valBalancedAccuracy": 0.6498
+      },
+      {
+        "epoch": 6,
+        "trainLoss": 1.0991,
+        "valBalancedAccuracy": 0.5974
+      },
+      {
+        "epoch": 7,
+        "trainLoss": 1.0536,
+        "valBalancedAccuracy": 0.6426
+      },
+      {
+        "epoch": 8,
+        "trainLoss": 1.0135,
+        "valBalancedAccuracy": 0.6521
+      },
+      {
+        "epoch": 9,
+        "trainLoss": 0.9591,
+        "valBalancedAccuracy": 0.6752
+      },
+      {
+        "epoch": 10,
+        "trainLoss": 0.9029,
+        "valBalancedAccuracy": 0.7101
+      },
+      {
+        "epoch": 11,
+        "trainLoss": 0.8489,
+        "valBalancedAccuracy": 0.682
+      },
+      {
+        "epoch": 12,
+        "trainLoss": 0.7967,
+        "valBalancedAccuracy": 0.6569
+      },
+      {
+        "epoch": 13,
+        "trainLoss": 0.7541,
+        "valBalancedAccuracy": 0.6712
+      },
+      {
+        "epoch": 14,
+        "trainLoss": 0.7267,
+        "valBalancedAccuracy": 0.6893
+      },
+      {
+        "epoch": 15,
+        "trainLoss": 0.6816,
+        "valBalancedAccuracy": 0.7369
+      },
+      {
+        "epoch": 16,
+        "trainLoss": 0.6479,
+        "valBalancedAccuracy": 0.6868
+      },
+      {
+        "epoch": 17,
+        "trainLoss": 0.6278,
+        "valBalancedAccuracy": 0.7042
+      },
+      {
+        "epoch": 18,
+        "trainLoss": 0.6048,
+        "valBalancedAccuracy": 0.6914
+      },
+      {
+        "epoch": 19,
+        "trainLoss": 0.6003,
+        "valBalancedAccuracy": 0.6914
+      },
+      {
+        "epoch": 20,
+        "trainLoss": 0.5887,
+        "valBalancedAccuracy": 0.7047
+      },
+      {
+        "epoch": 21,
+        "trainLoss": 0.5773,
+        "valBalancedAccuracy": 0.7129
+      },
+      {
+        "epoch": 22,
+        "trainLoss": 0.5731,
+        "valBalancedAccuracy": 0.721
+      },
+      {
+        "epoch": 23,
+        "trainLoss": 0.5704,
+        "valBalancedAccuracy": 0.7009
+      },
+      {
+        "epoch": 24,
+        "trainLoss": 0.5709,
+        "valBalancedAccuracy": 0.7166
+      },
+      {
+        "epoch": 25,
+        "trainLoss": 0.5722,
+        "valBalancedAccuracy": 0.7037
+      }
+    ],
+    "trainedAt": "2026-10-23"
+  },
+  "metrics": {
+    "accuracy": 0.8224,
+    "balancedAccuracy": 0.773,
+    "macroF1": 0.7275,
+    "auc": 0.9357,
+    "perClass": [
+      {
+        "name": "Actinic keratosis",
+        "precision": 0.6038,
+        "recall": 0.4848,
+        "f1": 0.5378,
+        "support": 66
+      },
+      {
+        "name": "Basal cell carcinoma",
+        "precision": 0.6535,
+        "recall": 0.8058,
+        "f1": 0.7217,
+        "support": 103
+      },
+      {
+        "name": "Benign keratosis",
+        "precision": 0.5898,
+        "recall": 0.7909,
+        "f1": 0.6757,
+        "support": 220
+      },
+      {
+        "name": "Dermatofibroma",
+        "precision": 0.6061,
+        "recall": 0.8696,
+        "f1": 0.7143,
+        "support": 23
+      },
+      {
+        "name": "Melanoma",
+        "precision": 0.5742,
+        "recall": 0.6592,
+        "f1": 0.6138,
+        "support": 223
+      },
+      {
+        "name": "Melanocytic nevus",
+        "precision": 0.9628,
+        "recall": 0.8695,
+        "f1": 0.9138,
+        "support": 1341
+      },
+      {
+        "name": "Vascular lesion",
+        "precision": 0.9,
+        "recall": 0.931,
+        "f1": 0.9153,
+        "support": 29
+      }
+    ],
+    "confusionMatrix": [
+      [
+        32,
+        14,
+        16,
+        1,
+        3,
+        0,
+        0
+      ],
+      [
+        6,
+        83,
+        4,
+        3,
+        5,
+        2,
+        0
+      ],
+      [
+        5,
+        5,
+        174,
+        4,
+        14,
+        18,
+        0
+      ],
+      [
+        0,
+        3,
+        0,
+        20,
+        0,
+        0,
+        0
+      ],
+      [
+        5,
+        7,
+        36,
+        1,
+        147,
+        25,
+        2
+      ],
+      [
+        5,
+        14,
+        65,
+        3,
+        87,
+        1166,
+        1
+      ],
+      [
+        0,
+        1,
+        0,
+        1,
+        0,
+        0,
+        27
+      ]
+    ]
+  },
+  "samples": [
+    {
+      "file": "0_1713.png",
+      "label": 0
+    },
+    {
+      "file": "0_1283.png",
+      "label": 0
+    },
+    {
+      "file": "1_489.png",
+      "label": 1
+    },
+    {
+      "file": "1_436.png",
+      "label": 1
+    },
+    {
+      "file": "2_29.png",
+      "label": 2
+    },
+    {
+      "file": "2_145.png",
+      "label": 2
+    },
+    {
+      "file": "3_1100.png",
+      "label": 3
+    },
+    {
+      "file": "3_895.png",
+      "label": 3
+    },
+    {
+      "file": "4_1072.png",
+      "label": 4
+    },
+    {
+      "file": "4_1304.png",
+      "label": 4
+    },
+    {
+      "file": "5_1467.png",
+      "label": 5
+    },
+    {
+      "file": "5_1284.png",
+      "label": 5
+    },
+    {
+      "file": "6_1962.png",
+      "label": 6
+    },
+    {
+      "file": "6_1089.png",
+      "label": 6
+    }
+  ]
+}
