@@ -88,7 +88,7 @@ class VisionModel:
 def load_registry():
     models = {}
     for path in sorted(MODELS_DIR.glob("*.json")):
-        card = json.loads(path.read_text())
+        card = json.loads(path.read_text(encoding="utf-8"))
         if (MODELS_DIR / f"{card['id']}.onnx").exists():
             models[card["id"]] = VisionModel(card)
     return models

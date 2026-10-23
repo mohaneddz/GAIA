@@ -1,0 +1,323 @@
+{
+  "id": "heart",
+  "title": "Heart disease risk",
+  "outcome": "Coronary artery disease on angiography or clinical diagnosis",
+  "dataset": {
+    "name": "Heart Failure Prediction (918 patients)",
+    "url": "https://www.kaggle.com/datasets/fedesoriano/heart-failure-prediction",
+    "license": "ODbL 1.0",
+    "citation": "fedesoriano 2021, combining the Cleveland, Hungarian, Swiss, Long Beach VA and Statlog heart datasets (UCI)"
+  },
+  "features": [
+    {
+      "key": "age",
+      "label": "Age",
+      "type": "number",
+      "unit": "years",
+      "min": 18,
+      "max": 100,
+      "default": 54,
+      "step": 1
+    },
+    {
+      "key": "sex",
+      "label": "Sex",
+      "type": "category",
+      "options": [
+        {
+          "value": "M",
+          "label": "Male"
+        },
+        {
+          "value": "F",
+          "label": "Female"
+        }
+      ],
+      "default": "M"
+    },
+    {
+      "key": "chestPain",
+      "label": "Chest pain type",
+      "type": "category",
+      "options": [
+        {
+          "value": "ASY",
+          "label": "Asymptomatic"
+        },
+        {
+          "value": "ATA",
+          "label": "Atypical angina"
+        },
+        {
+          "value": "NAP",
+          "label": "Non-anginal pain"
+        },
+        {
+          "value": "TA",
+          "label": "Typical angina"
+        }
+      ],
+      "default": "ASY"
+    },
+    {
+      "key": "restingBp",
+      "label": "Resting blood pressure",
+      "type": "number",
+      "unit": "mmHg",
+      "min": 80,
+      "max": 220,
+      "default": 130,
+      "step": 1
+    },
+    {
+      "key": "cholesterol",
+      "label": "Serum cholesterol",
+      "type": "number",
+      "unit": "mg/dL",
+      "min": 100,
+      "max": 600,
+      "default": 240,
+      "step": 1
+    },
+    {
+      "key": "fastingSugar",
+      "label": "Fasting blood sugar above 120 mg/dL",
+      "type": "category",
+      "options": [
+        {
+          "value": "0",
+          "label": "No"
+        },
+        {
+          "value": "1",
+          "label": "Yes"
+        }
+      ],
+      "default": "0"
+    },
+    {
+      "key": "restingEcg",
+      "label": "Resting ECG",
+      "type": "category",
+      "options": [
+        {
+          "value": "Normal",
+          "label": "Normal"
+        },
+        {
+          "value": "ST",
+          "label": "ST-T wave abnormality"
+        },
+        {
+          "value": "LVH",
+          "label": "Left ventricular hypertrophy"
+        }
+      ],
+      "default": "Normal"
+    },
+    {
+      "key": "maxHr",
+      "label": "Maximum heart rate on exercise test",
+      "type": "number",
+      "unit": "bpm",
+      "min": 60,
+      "max": 220,
+      "default": 138,
+      "step": 1
+    },
+    {
+      "key": "exerciseAngina",
+      "label": "Exercise-induced angina",
+      "type": "category",
+      "options": [
+        {
+          "value": "N",
+          "label": "No"
+        },
+        {
+          "value": "Y",
+          "label": "Yes"
+        }
+      ],
+      "default": "N"
+    },
+    {
+      "key": "oldpeak",
+      "label": "ST depression on exercise (oldpeak)",
+      "type": "number",
+      "unit": "mm",
+      "min": -3,
+      "max": 7,
+      "default": 0.9,
+      "step": 0.1
+    },
+    {
+      "key": "stSlope",
+      "label": "Peak exercise ST slope",
+      "type": "category",
+      "options": [
+        {
+          "value": "Up",
+          "label": "Upsloping"
+        },
+        {
+          "value": "Flat",
+          "label": "Flat"
+        },
+        {
+          "value": "Down",
+          "label": "Downsloping"
+        }
+      ],
+      "default": "Flat"
+    }
+  ],
+  "kind": "risk",
+  "prevalence": 0.5531,
+  "model": {
+    "type": "logistic regression",
+    "intercept": -0.485169,
+    "regularisationC": 2.782559402207126,
+    "terms": [
+      {
+        "feature": "age",
+        "kind": "number",
+        "mean": 53.60218,
+        "std": 9.528147,
+        "weight": 0.153535
+      },
+      {
+        "feature": "sex",
+        "kind": "category",
+        "value": "F",
+        "weight": -1.535317,
+        "share": 0.212534
+      },
+      {
+        "feature": "chestPain",
+        "kind": "category",
+        "value": "ATA",
+        "weight": -1.661201,
+        "share": 0.182561
+      },
+      {
+        "feature": "chestPain",
+        "kind": "category",
+        "value": "NAP",
+        "weight": -1.395577,
+        "share": 0.220708
+      },
+      {
+        "feature": "chestPain",
+        "kind": "category",
+        "value": "TA",
+        "weight": -1.622733,
+        "share": 0.047684
+      },
+      {
+        "feature": "restingBp",
+        "kind": "number",
+        "mean": 133.134877,
+        "std": 18.166715,
+        "weight": 0.091632
+      },
+      {
+        "feature": "cholesterol",
+        "kind": "number",
+        "mean": 242.574932,
+        "std": 53.905953,
+        "weight": 0.124033
+      },
+      {
+        "feature": "fastingSugar",
+        "kind": "category",
+        "value": "1",
+        "weight": 1.197012,
+        "share": 0.234332
+      },
+      {
+        "feature": "restingEcg",
+        "kind": "category",
+        "value": "ST",
+        "weight": 0.03644,
+        "share": 0.192098
+      },
+      {
+        "feature": "restingEcg",
+        "kind": "category",
+        "value": "LVH",
+        "weight": 0.117878,
+        "share": 0.20436
+      },
+      {
+        "feature": "maxHr",
+        "kind": "number",
+        "mean": 136.426431,
+        "std": 25.729613,
+        "weight": -0.283326
+      },
+      {
+        "feature": "exerciseAngina",
+        "kind": "category",
+        "value": "Y",
+        "weight": 0.847383,
+        "share": 0.411444
+      },
+      {
+        "feature": "oldpeak",
+        "kind": "number",
+        "mean": 0.90218,
+        "std": 1.050003,
+        "weight": 0.361288
+      },
+      {
+        "feature": "stSlope",
+        "kind": "category",
+        "value": "Flat",
+        "weight": 2.139837,
+        "share": 0.516349
+      },
+      {
+        "feature": "stSlope",
+        "kind": "category",
+        "value": "Down",
+        "weight": 0.937127,
+        "share": 0.070845
+      }
+    ]
+  },
+  "splits": {
+    "train": 734,
+    "test": 184
+  },
+  "metrics": {
+    "auc": 0.9481,
+    "brier": 0.0976,
+    "threshold": 0.4305,
+    "sensitivity": 0.8725,
+    "specificity": 0.8537,
+    "calibration": [
+      {
+        "predicted": 0.0398,
+        "observed": 0.027
+      },
+      {
+        "predicted": 0.1605,
+        "observed": 0.2162
+      },
+      {
+        "predicted": 0.5424,
+        "observed": 0.6111
+      },
+      {
+        "predicted": 0.8349,
+        "observed": 0.9189
+      },
+      {
+        "predicted": 0.9611,
+        "observed": 1.0
+      }
+    ]
+  },
+  "trainedAt": "2026-10-23"
+}

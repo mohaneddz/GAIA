@@ -245,7 +245,7 @@ def train(spec: VisionSpec, batch_size=64, lr=1e-3):
         "metrics": test_metrics,
         "samples": save_samples(spec, *splits["test"]),
     }
-    (MODELS_DIR / f"{spec.id}.json").write_text(json.dumps(card, indent=2))
+    (MODELS_DIR / f"{spec.id}.json").write_text(json.dumps(card, indent=2), encoding="utf-8")
     print(f"[{spec.id}] wrote {onnx_path.name} ({card['onnxBytes'] / 1e6:.1f} MB)", flush=True)
     return card
 

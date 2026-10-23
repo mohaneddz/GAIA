@@ -7,6 +7,7 @@ from PIL import Image, UnidentifiedImageError
 
 load_dotenv(Path(__file__).with_name(".env"))
 
+import risk
 from chat import ChatUnavailable, chat_enabled, complete
 from signals.ecg import LEAD_NAMES, ecg_vitals, generate_ecg
 from signals.eeg import CHANNEL_NAMES, eeg_metrics, generate_eeg
@@ -47,6 +48,16 @@ def bad_param(error):
 @app.errorhandler(UnknownModel)
 def unknown_model(error):
     return jsonify({"error": f"unknown model or sample: {error.args[0]}"}), 404
+
+
+@app.errorhandler(risk.UnknownRiskModel)
+def unknown_risk_model(error):
+    return jsonify({"error": f"unknown risk model: {error.args[0]}"}), 404
+
+
+@app.errorhandler(risk.InvalidInputs)
+def invalid_inputs(error):
+    return jsonify({"error": str(error)}), 400
 
 
 @app.errorhandler(413)
@@ -187,6 +198,22 @@ def predict(model_id):
             return jsonify(model.predict(image))
     except UnidentifiedImageError:
         raise BadParam("could not read the file as an image")
+
+
+@app.get("/api/risk")
+def list_risk_models():
+    return jsonify(list(risk.CARDS.values()))
+
+
+@app.get("/api/risk/<model_id>")
+def risk_card(model_id):
+    return jsonify(risk.get_card(model_id))
+
+
+@app.post("/api/risk/<model_id>/predict")
+def risk_predict(model_id):
+    body = request.get_json(silent=True) or {}
+    return jsonify(risk.predict(model_id, body.get("inputs")))
 
 
 if __name__ == "__main__":
