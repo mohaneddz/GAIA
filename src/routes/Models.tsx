@@ -6,10 +6,11 @@ import { Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "rec
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import ConfusionMatrix from "@/components/vision/ConfusionMatrix"
 import { fetchModels, percent, toolRoutes, type ModelCard } from "@/lib/visionApi"
+import { fetchRiskModels, riskRoutes, type RiskCard } from "@/lib/riskApi"
 
-function Summary({ models }: { models: ModelCard[] }) {
+function Summary({ models, riskModels }: { models: ModelCard[]; riskModels: RiskCard[] }) {
   const totals = [
-    { icon: Layers, label: "Models", value: models.length.toString() },
+    { icon: Layers, label: "Models", value: `${models.length} imaging, ${riskModels.length} risk` },
     { icon: Database, label: "Held-out test images", value: models.reduce((n, m) => n + m.dataset.splits.test, 0).toLocaleString() },
     { icon: Cpu, label: "Total ONNX size", value: `${(models.reduce((n, m) => n + m.onnxBytes, 0) / 1e6).toFixed(1)} MB` },
   ]
@@ -88,13 +89,48 @@ function ModelEntry({ model }: { model: ModelCard }) {
   )
 }
 
+function RiskEntry({ model }: { model: RiskCard }) {
+  return (
+    <Card>
+      <CardHeader className="flex flex-row flex-wrap items-start justify-between gap-2">
+        <div>
+          <CardTitle>{model.title}</CardTitle>
+          <CardDescription>
+            Logistic regression · {model.features.length} inputs · {model.dataset.name}
+          </CardDescription>
+        </div>
+        <Link to={riskRoutes[model.id]} className="flex items-center gap-1 rounded-full bg-primary px-4 py-1.5 text-sm text-white hover:bg-primary/90">
+          Open tool <ArrowRight className="h-4 w-4" />
+        </Link>
+      </CardHeader>
+      <CardContent className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+        {[
+          { label: "ROC AUC", value: model.metrics.auc.toFixed(3) },
+          { label: "Brier score", value: model.metrics.brier.toFixed(3) },
+          { label: "Sensitivity", value: percent(model.metrics.sensitivity) },
+          { label: "Specificity", value: percent(model.metrics.specificity) },
+        ].map((tile) => (
+          <div key={tile.label} className="rounded-lg border p-2 text-center">
+            <p className="text-xs text-muted-foreground">{tile.label}</p>
+            <p className="font-semibold text-gray-900">{tile.value}</p>
+          </div>
+        ))}
+      </CardContent>
+    </Card>
+  )
+}
+
 export default function Models() {
   const [models, setModels] = useState<ModelCard[] | null>(null)
+  const [riskModels, setRiskModels] = useState<RiskCard[]>([])
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    fetchModels()
-      .then(setModels)
+    Promise.all([fetchModels(), fetchRiskModels()])
+      .then(([vision, risk]) => {
+        setModels(vision)
+        setRiskModels(risk)
+      })
       .catch((err) => setError(err instanceof TypeError ? "The GAIA server is not reachable. Start it with python server/app.py." : err.message))
   }, [])
 
@@ -108,8 +144,13 @@ export default function Models() {
       {!models && !error && <p className="text-sm text-muted-foreground">Loading models…</p>}
       {models && (
         <>
-          <Summary models={models} />
+          <Summary models={models} riskModels={riskModels} />
+          <h2 className="w-full text-lg font-semibold text-gray-800">Imaging models</h2>
           {models.map((model) => <ModelEntry key={model.id} model={model} />)}
+          <h2 className="w-full text-lg font-semibold text-gray-800">Risk models</h2>
+          <div className="grid w-full gap-6 lg:grid-cols-2">
+            {riskModels.map((model) => <RiskEntry key={model.id} model={model} />)}
+          </div>
         </>
       )}
     </div>
