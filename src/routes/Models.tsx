@@ -31,6 +31,8 @@ function Summary({ models, riskModels }: { models: ModelCard[]; riskModels: Risk
   )
 }
 
+const duration = (seconds: number) => (seconds < 90 ? `${seconds} s` : `${Math.round(seconds / 60)} min`)
+
 function ModelEntry({ model }: { model: ModelCard }) {
   const tiles = [
     { label: "Accuracy", value: percent(model.metrics.accuracy) },
@@ -45,7 +47,7 @@ function ModelEntry({ model }: { model: ModelCard }) {
         <div>
           <CardTitle>{model.title}</CardTitle>
           <CardDescription>
-            {model.modality} · {model.classes.length} classes · trained {model.training.trainedAt} in {Math.round(model.training.seconds / 60)} min on {model.training.device}
+            {model.modality} · {model.classes.length} classes · trained {model.training.trainedAt} in {duration(model.training.seconds)} on {model.training.device}
           </CardDescription>
         </div>
         {toolRoutes[model.id] && (
@@ -54,9 +56,9 @@ function ModelEntry({ model }: { model: ModelCard }) {
           </Link>
         )}
       </CardHeader>
-      <CardContent className="grid gap-6 lg:grid-cols-3">
+      <CardContent className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_auto]">
         <div className="space-y-4">
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
             {tiles.map((tile) => (
               <div key={tile.label} className="rounded-lg border p-2 text-center">
                 <p className="text-xs text-muted-foreground">{tile.label}</p>
@@ -68,17 +70,17 @@ function ModelEntry({ model }: { model: ModelCard }) {
             {model.dataset.name}: {model.dataset.splits.train.toLocaleString()} / {model.dataset.splits.val.toLocaleString()} / {model.dataset.splits.test.toLocaleString()} train / val / test.{" "}
             {(model.parameters / 1e6).toFixed(2)}M parameters, {(model.onnxBytes / 1e6).toFixed(1)} MB.
           </p>
-        </div>
-        <div>
+          <div>
           <p className="mb-1 text-sm font-medium text-gray-700">Validation balanced accuracy by epoch</p>
           <ResponsiveContainer width="100%" height={150}>
             <LineChart data={model.training.history} margin={{ left: -20, right: 8, top: 4 }}>
               <XAxis dataKey="epoch" tickLine={false} fontSize={11} />
-              <YAxis domain={["auto", 1]} tickLine={false} fontSize={11} tickFormatter={(v) => `${Math.round(v * 100)}`} />
+              <YAxis domain={[0, 1]} ticks={[0, 0.25, 0.5, 0.75, 1]} tickLine={false} fontSize={11} tickFormatter={(v) => `${Math.round(v * 100)}%`} />
               <Tooltip formatter={(v: number) => percent(v)} labelFormatter={(e) => `Epoch ${e}`} />
               <Line dataKey="valBalancedAccuracy" stroke="var(--primary)" strokeWidth={2} dot={false} isAnimationActive={false} />
             </LineChart>
           </ResponsiveContainer>
+          </div>
         </div>
         <div>
           <p className="mb-1 text-sm font-medium text-gray-700">Test confusion matrix</p>

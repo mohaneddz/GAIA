@@ -2,7 +2,7 @@ type Props = { matrix: number[][]; classes: string[] }
 
 // Rows are true classes, columns are predictions; cell shade is the row share.
 export default function ConfusionMatrix({ matrix, classes }: Props) {
-  const compact = classes.length > 4
+  const compact = classes.length > 2
 
   return (
     <div className="overflow-x-auto">
