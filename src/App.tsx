@@ -25,7 +25,7 @@ import SkinLesion from '@/routes/dashboard/dermatology/SkinLesion';
 function App() {
   return (
     <Router>
-      <main className="center full col bg-slate-200 overflow-y-auto">
+      <main className="full col items-center bg-slate-200 overflow-y-auto">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/patients" element={<Patients />} />
