@@ -11,7 +11,7 @@ It pairs a multi-specialty clinical dashboard with a small Python server that ge
 ## Screenshot
 
 <p align="center">
-  <img src="docs/screenshots/gaia-dashboard.png" alt="GAIA health analytics dashboard" width="100%">
+  <img src="docs/screenshots/clinic-overview.png" alt="GAIA clinic overview with patient, analysis and review counts, analyses per day, and flagged results" width="100%">
 </p>
 
 ---
@@ -38,6 +38,7 @@ React dashboard (Vite, port 1420)              Flask server (server/, port 5600)
   Imaging tools ─────── POST /api/models/<id>/predict ─►  vision.py  ONNX classifiers + CAM heatmaps
   Risk calculators ──── POST /api/risk/<id>/predict ───►  risk.py    logistic regressions from JSON
   Model registry ────── GET /api/models, /api/risk
+  Patients, history ─── /api/patients, /api/analyses, /api/stats ─►  records.py + store.py  local SQLite
   Chat ──────────────── POST /api/chat ─────────►  chat.py    Groq (key stays server-side)
 Tauri shell (src-tauri/) wraps the React app; it does not start the Python server.
 ```
@@ -78,6 +79,17 @@ Datasets: [MedMNIST v2](https://medmnist.com/) (Yang et al., Scientific Data 202
 
 Both are L2-regularised logistic regressions, exported as JSON coefficients. The server scores them without scikit-learn. Because the model is linear, each score splits exactly into an average-patient baseline plus one log-odds term per input, and the calculator draws that split as the explanation. The operating threshold is Youden's J, chosen on training data. The stroke model uses clinical inputs only, leaving out marital status and job type.
 
+### Patients and history
+
+Patients, and every result saved from a tool, live in a local SQLite file at `server/data/gaia.sqlite3`. That folder is gitignored, and `GAIA_DB` points it elsewhere. From any imaging or risk tool you can save the result to a patient or to the history only, with a note. Opening a tool from a patient's page preselects that patient.
+
+The server, not the browser, writes the summary and decides the review flag:
+
+- For an imaging result, it checks the probabilities against the model's classes, flags it if the predicted class needs attention (pneumonia, any brain tumour, malignant breast, melanoma, BCC, actinic keratosis, erythroblasts, immature granulocytes), stores a 160 px thumbnail, and drops the heatmap.
+- For a risk result, it re-scores from the submitted inputs, so a saved score always matches the model, and flags it when the score is above the threshold.
+
+Home shows patient, analysis and flag counts, analyses per day, a per-tool breakdown and the latest flagged results. The History page lists everything, filterable by tool and by flag. Deleting a patient keeps their analyses in the history, unlinked.
+
 ### Retraining
 
 ```bash
@@ -110,11 +122,12 @@ Backed by a model or computation:
 - Imaging: Chest X-ray Pneumonia (Pulmonology), Brain MRI Classifier (Neurology), Breast Ultrasound (Radiology), Blood Cell Classifier (Pathology), Skin Lesion Classifier (Dermatology).
 - Risk: Heart Disease Risk (Cardiology), Stroke Risk (Neurology).
 - Signals: ECG Monitor and EEG Monitor (waveforms, ECG HR and RR Std, all four EEG brain metrics).
+- Patients, History and the Home overview, from the local database.
 - Model Registry and Ask GAIA (chat).
 
 If the server is down, these pages say so instead of showing data.
 
-Still static demo content: the remaining cards on the ECG and EEG pages, Treatment Recommendations, Blood Analysis, Cognitive Assessment, Report Summarizer, Specimen Tracker, Patients and the Home statistics. [docs/ROADMAP.md](docs/ROADMAP.md) lists the next milestones for these.
+Still static demo content: the remaining cards on the ECG and EEG pages, Treatment Recommendations, Blood Analysis, Cognitive Assessment, Report Summarizer, Specimen Tracker and Settings. [docs/ROADMAP.md](docs/ROADMAP.md) lists the next milestones for these.
 
 ### Chat
 
@@ -165,7 +178,12 @@ python -m pytest
 
 ---
 
-## Models and risk tools
+## Patients and models
+
+<p align="center">
+  <img src="docs/screenshots/patient-record.png" alt="Patient record with clinical notes, tool shortcuts and saved analyses flagged for review" width="100%">
+</p>
+
 
 <p align="center">
   <img src="docs/screenshots/model-registry.png" alt="Model registry listing each classifier with test metrics, validation curve and confusion matrix" width="100%">

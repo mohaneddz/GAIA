@@ -31,7 +31,7 @@ Removed as duplicates or empty: Cardiology "Imaging Utility" (the same file as P
 
 ## Milestones
 
-1. **Vision models.** Training pipeline, five CNNs, `/api/models` and `/api/models/<id>/predict` with CAM, the shared workbench, the five classifier pages, the model registry page, and navigation cleanup.
-2. **Risk models.** Heart failure and stroke risk, with per-feature contributions from the linear models.
-3. **Patients and history.** Server-side SQLite for patients and saved analyses, an analysis history page, and Home stats computed from real data.
+1. **Vision models** (done). Training pipeline, five CNNs, `/api/models` and `/api/models/<id>/predict` with CAM, the shared workbench, the five classifier pages, the model registry page, and navigation cleanup.
+2. **Risk models** (done). Heart failure and stroke risk, with per-feature contributions from the linear models.
+3. **Patients and history** (done). Server-side SQLite for patients and saved analyses, an analysis history page, and Home stats computed from real data.
 4. **Reports.** A Groq-written report from a saved analysis, plus the pathology report summariser.
