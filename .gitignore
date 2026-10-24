@@ -31,3 +31,6 @@ plan.md
 __pycache__/
 .pytest_cache/
 .venv/
+
+# Training data (set GAIA_DATA_DIR to keep it elsewhere)
+server/ml/data/

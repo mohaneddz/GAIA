@@ -1,0 +1,302 @@
+{
+  "id": "breast",
+  "title": "Breast ultrasound classifier",
+  "modality": "Breast ultrasound",
+  "architecture": "MobileNetV3-Small (ImageNet-pretrained) + global-average-pool linear head",
+  "parameters": 928162,
+  "onnxBytes": 3722318,
+  "input": {
+    "size": 224,
+    "mean": [
+      0.485,
+      0.456,
+      0.406
+    ],
+    "std": [
+      0.229,
+      0.224,
+      0.225
+    ]
+  },
+  "classes": [
+    {
+      "name": "Malignant",
+      "description": "Features suspicious for carcinoma; biopsy is indicated."
+    },
+    {
+      "name": "Normal or benign",
+      "description": "No lesion, or a lesion with benign features such as a cyst or fibroadenoma."
+    }
+  ],
+  "dataset": {
+    "name": "BreastMNIST (128 px)",
+    "url": "https://medmnist.com/",
+    "license": "CC BY 4.0",
+    "citation": "Yang et al., MedMNIST v2, Scientific Data 2023; Al-Dhabyani et al., Data in Brief 2020",
+    "splits": {
+      "train": 546,
+      "val": 78,
+      "test": 156
+    }
+  },
+  "training": {
+    "epochs": 40,
+    "bestValBalancedAccuracy": 0.9436,
+    "seconds": 26,
+    "device": "NVIDIA GeForce RTX 4070 Laptop GPU",
+    "onnxMaxLogitDrift": 7.12275505065918e-06,
+    "history": [
+      {
+        "epoch": 1,
+        "trainLoss": 0.6826,
+        "valBalancedAccuracy": 0.3922
+      },
+      {
+        "epoch": 2,
+        "trainLoss": 0.6555,
+        "valBalancedAccuracy": 0.5464
+      },
+      {
+        "epoch": 3,
+        "trainLoss": 0.6166,
+        "valBalancedAccuracy": 0.5777
+      },
+      {
+        "epoch": 4,
+        "trainLoss": 0.5555,
+        "valBalancedAccuracy": 0.5952
+      },
+      {
+        "epoch": 5,
+        "trainLoss": 0.5043,
+        "valBalancedAccuracy": 0.6429
+      },
+      {
+        "epoch": 6,
+        "trainLoss": 0.4307,
+        "valBalancedAccuracy": 0.7143
+      },
+      {
+        "epoch": 7,
+        "trainLoss": 0.3852,
+        "valBalancedAccuracy": 0.7619
+      },
+      {
+        "epoch": 8,
+        "trainLoss": 0.3432,
+        "valBalancedAccuracy": 0.8008
+      },
+      {
+        "epoch": 9,
+        "trainLoss": 0.2775,
+        "valBalancedAccuracy": 0.8008
+      },
+      {
+        "epoch": 10,
+        "trainLoss": 0.241,
+        "valBalancedAccuracy": 0.8872
+      },
+      {
+        "epoch": 11,
+        "trainLoss": 0.2257,
+        "valBalancedAccuracy": 0.8158
+      },
+      {
+        "epoch": 12,
+        "trainLoss": 0.2398,
+        "valBalancedAccuracy": 0.896
+      },
+      {
+        "epoch": 13,
+        "trainLoss": 0.2442,
+        "valBalancedAccuracy": 0.8722
+      },
+      {
+        "epoch": 14,
+        "trainLoss": 0.2012,
+        "valBalancedAccuracy": 0.8697
+      },
+      {
+        "epoch": 15,
+        "trainLoss": 0.1822,
+        "valBalancedAccuracy": 0.8997
+      },
+      {
+        "epoch": 16,
+        "trainLoss": 0.1803,
+        "valBalancedAccuracy": 0.9436
+      },
+      {
+        "epoch": 17,
+        "trainLoss": 0.1668,
+        "valBalancedAccuracy": 0.8484
+      },
+      {
+        "epoch": 18,
+        "trainLoss": 0.1659,
+        "valBalancedAccuracy": 0.8872
+      },
+      {
+        "epoch": 19,
+        "trainLoss": 0.1574,
+        "valBalancedAccuracy": 0.8484
+      },
+      {
+        "epoch": 20,
+        "trainLoss": 0.173,
+        "valBalancedAccuracy": 0.896
+      },
+      {
+        "epoch": 21,
+        "trainLoss": 0.195,
+        "valBalancedAccuracy": 0.8396
+      },
+      {
+        "epoch": 22,
+        "trainLoss": 0.1603,
+        "valBalancedAccuracy": 0.7293
+      },
+      {
+        "epoch": 23,
+        "trainLoss": 0.1707,
+        "valBalancedAccuracy": 0.8935
+      },
+      {
+        "epoch": 24,
+        "trainLoss": 0.1618,
+        "valBalancedAccuracy": 0.896
+      },
+      {
+        "epoch": 25,
+        "trainLoss": 0.1621,
+        "valBalancedAccuracy": 0.8872
+      },
+      {
+        "epoch": 26,
+        "trainLoss": 0.1627,
+        "valBalancedAccuracy": 0.8396
+      },
+      {
+        "epoch": 27,
+        "trainLoss": 0.1544,
+        "valBalancedAccuracy": 0.8396
+      },
+      {
+        "epoch": 28,
+        "trainLoss": 0.1551,
+        "valBalancedAccuracy": 0.8571
+      },
+      {
+        "epoch": 29,
+        "trainLoss": 0.155,
+        "valBalancedAccuracy": 0.8571
+      },
+      {
+        "epoch": 30,
+        "trainLoss": 0.1506,
+        "valBalancedAccuracy": 0.8571
+      },
+      {
+        "epoch": 31,
+        "trainLoss": 0.1505,
+        "valBalancedAccuracy": 0.8484
+      },
+      {
+        "epoch": 32,
+        "trainLoss": 0.1472,
+        "valBalancedAccuracy": 0.8484
+      },
+      {
+        "epoch": 33,
+        "trainLoss": 0.1479,
+        "valBalancedAccuracy": 0.8484
+      },
+      {
+        "epoch": 34,
+        "trainLoss": 0.1526,
+        "valBalancedAccuracy": 0.8484
+      },
+      {
+        "epoch": 35,
+        "trainLoss": 0.1474,
+        "valBalancedAccuracy": 0.8484
+      },
+      {
+        "epoch": 36,
+        "trainLoss": 0.1561,
+        "valBalancedAccuracy": 0.8484
+      },
+      {
+        "epoch": 37,
+        "trainLoss": 0.1464,
+        "valBalancedAccuracy": 0.8484
+      },
+      {
+        "epoch": 38,
+        "trainLoss": 0.1501,
+        "valBalancedAccuracy": 0.8484
+      },
+      {
+        "epoch": 39,
+        "trainLoss": 0.1512,
+        "valBalancedAccuracy": 0.8722
+      },
+      {
+        "epoch": 40,
+        "trainLoss": 0.1466,
+        "valBalancedAccuracy": 0.896
+      }
+    ],
+    "trainedAt": "2026-10-23"
+  },
+  "metrics": {
+    "accuracy": 0.8782,
+    "balancedAccuracy": 0.834,
+    "macroF1": 0.8416,
+    "auc": 0.8968,
+    "perClass": [
+      {
+        "name": "Malignant",
+        "precision": 0.7949,
+        "recall": 0.7381,
+        "f1": 0.7654,
+        "support": 42
+      },
+      {
+        "name": "Normal or benign",
+        "precision": 0.906,
+        "recall": 0.9298,
+        "f1": 0.9177,
+        "support": 114
+      }
+    ],
+    "confusionMatrix": [
+      [
+        31,
+        11
+      ],
+      [
+        8,
+        106
+      ]
+    ]
+  },
+  "samples": [
+    {
+      "file": "0_127.png",
+      "label": 0
+    },
+    {
+      "file": "0_107.png",
+      "label": 0
+    },
+    {
+      "file": "1_53.png",
+      "label": 1
+    },
+    {
+      "file": "1_47.png",
+      "label": 1
+    }
+  ]
+}

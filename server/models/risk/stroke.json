@@ -1,0 +1,221 @@
+{
+  "id": "stroke",
+  "title": "Stroke risk",
+  "outcome": "History of stroke",
+  "dataset": {
+    "name": "Stroke Prediction Dataset (5,110 people)",
+    "url": "https://www.kaggle.com/datasets/fedesoriano/stroke-prediction-dataset",
+    "license": "Data files © original authors",
+    "citation": "fedesoriano 2021"
+  },
+  "features": [
+    {
+      "key": "age",
+      "label": "Age",
+      "type": "number",
+      "unit": "years",
+      "min": 1,
+      "max": 100,
+      "default": 60,
+      "step": 1
+    },
+    {
+      "key": "sex",
+      "label": "Sex",
+      "type": "category",
+      "options": [
+        {
+          "value": "Male",
+          "label": "Male"
+        },
+        {
+          "value": "Female",
+          "label": "Female"
+        }
+      ],
+      "default": "Male"
+    },
+    {
+      "key": "hypertension",
+      "label": "Hypertension",
+      "type": "category",
+      "options": [
+        {
+          "value": "0",
+          "label": "No"
+        },
+        {
+          "value": "1",
+          "label": "Yes"
+        }
+      ],
+      "default": "0"
+    },
+    {
+      "key": "heartDisease",
+      "label": "Heart disease",
+      "type": "category",
+      "options": [
+        {
+          "value": "0",
+          "label": "No"
+        },
+        {
+          "value": "1",
+          "label": "Yes"
+        }
+      ],
+      "default": "0"
+    },
+    {
+      "key": "glucose",
+      "label": "Average glucose level",
+      "type": "number",
+      "unit": "mg/dL",
+      "min": 50,
+      "max": 300,
+      "default": 105,
+      "step": 0.1
+    },
+    {
+      "key": "bmi",
+      "label": "Body mass index",
+      "type": "number",
+      "unit": "kg/m²",
+      "min": 10,
+      "max": 70,
+      "default": 28.5,
+      "step": 0.1
+    },
+    {
+      "key": "smoking",
+      "label": "Smoking",
+      "type": "category",
+      "options": [
+        {
+          "value": "never smoked",
+          "label": "Never"
+        },
+        {
+          "value": "formerly smoked",
+          "label": "Former"
+        },
+        {
+          "value": "smokes",
+          "label": "Current"
+        },
+        {
+          "value": "Unknown",
+          "label": "Unknown"
+        }
+      ],
+      "default": "never smoked"
+    }
+  ],
+  "kind": "risk",
+  "prevalence": 0.0487,
+  "model": {
+    "type": "logistic regression",
+    "intercept": -4.164801,
+    "regularisationC": 0.3593813663804626,
+    "terms": [
+      {
+        "feature": "age",
+        "kind": "number",
+        "mean": 43.158728,
+        "std": 22.746994,
+        "weight": 1.594868
+      },
+      {
+        "feature": "sex",
+        "kind": "category",
+        "value": "Female",
+        "weight": 0.003886,
+        "share": 0.578419
+      },
+      {
+        "feature": "hypertension",
+        "kind": "category",
+        "value": "1",
+        "weight": 0.404535,
+        "share": 0.099584
+      },
+      {
+        "feature": "heartDisease",
+        "kind": "category",
+        "value": "1",
+        "weight": 0.335416,
+        "share": 0.052606
+      },
+      {
+        "feature": "glucose",
+        "kind": "number",
+        "mean": 106.101835,
+        "std": 44.771878,
+        "weight": 0.168861
+      },
+      {
+        "feature": "bmi",
+        "kind": "number",
+        "mean": 28.820406,
+        "std": 7.734173,
+        "weight": -0.029514
+      },
+      {
+        "feature": "smoking",
+        "kind": "category",
+        "value": "formerly smoked",
+        "weight": 0.117266,
+        "share": 0.173966
+      },
+      {
+        "feature": "smoking",
+        "kind": "category",
+        "value": "smokes",
+        "weight": 0.199755,
+        "share": 0.149009
+      },
+      {
+        "feature": "smoking",
+        "kind": "category",
+        "value": "Unknown",
+        "weight": -0.005557,
+        "share": 0.30438
+      }
+    ]
+  },
+  "splits": {
+    "train": 4087,
+    "test": 1022
+  },
+  "metrics": {
+    "auc": 0.8001,
+    "brier": 0.0434,
+    "threshold": 0.0555,
+    "sensitivity": 0.66,
+    "specificity": 0.75,
+    "calibration": [
+      {
+        "predicted": 0.0018,
+        "observed": 0.0049
+      },
+      {
+        "predicted": 0.0066,
+        "observed": 0.0
+      },
+      {
+        "predicted": 0.0193,
+        "observed": 0.0294
+      },
+      {
+        "predicted": 0.0506,
+        "observed": 0.0735
+      },
+      {
+        "predicted": 0.1623,
+        "observed": 0.1366
+      }
+    ]
+  },
+  "trainedAt": "2026-10-23"
+}

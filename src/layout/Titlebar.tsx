@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { getCurrentWindow } from '@tauri-apps/api/window';
 import { listen } from '@tauri-apps/api/event';
+import { Copy, Minus, Square, X } from 'lucide-react';
 
 export default function Titlebar() {
   const isTauri = typeof window !== 'undefined' && '__TAURI_INTERNALS__' in window;
@@ -61,14 +62,14 @@ export default function Titlebar() {
 
   return (
     <div data-tauri-drag-region className="titlebar ml-auto">
-      {!isFullscreen && (
+      {isTauri && !isFullscreen && (
         <>
           <button
             onClick={() => appWindow?.minimize()}
             className="titlebar-button z-9999"
             id="titlebar-minimize"
           >
-            <img src="https://api.iconify.design/mdi:window-minimize.svg" alt="minimize" />
+            <Minus className="h-4 w-4" aria-label="Minimize" />
           </button>
 
           <button
@@ -82,9 +83,9 @@ export default function Titlebar() {
             id="titlebar-maximize"
           >
             {!isMaximized ? (
-              <img src="https://api.iconify.design/mdi:window-maximize.svg" alt="maximize" />
+              <Square className="h-3.5 w-3.5" aria-label="Maximize" />
             ) : (
-              <img src="https://api.iconify.design/mdi:window-restore.svg" alt="restore" />
+              <Copy className="h-3.5 w-3.5" aria-label="Restore" />
             )}
           </button>
 
@@ -93,7 +94,7 @@ export default function Titlebar() {
             className="titlebar-button z-9999"
             id="titlebar-close"
           >
-            <img src="https://api.iconify.design/mdi:close.svg" alt="close" />
+            <X className="h-4 w-4" aria-label="Close" />
           </button>
         </>
       )}

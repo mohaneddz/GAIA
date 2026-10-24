@@ -3,59 +3,10 @@
 import { useState, useRef, useEffect } from "react";
 import ReactMarkdown from 'react-markdown';
 import { fetchHealth, sendChat } from "@/lib/signalApi";
+import { getCookie, setCookie } from "@/lib/cookies";
+import { pageName } from "@/lib/pageNames";
 
 type Message = { role: "user" | "assistant"; content: string; failed?: boolean };
-
-const featureMap: Record<string, string> = {
-  "/": "Clinic Statistics",
-  "/about": "About",
-  "/contact": "Contact",
-  "/settings": "Settings",
-  "/patients": "Patients",
-  "/chat": "Chat",
-  "/dashboard": "Dashboard",
-  "/dashboard/general": "General Medicine",
-  "/dashboard/general/symptom-ai": "Symptom Analyzer (AI)",
-  "/dashboard/general/diagnosis": "Diagnosis Suggestions",
-  "/dashboard/general/treatment": "Treatment Recommendations",
-  "/dashboard/cardiology": "Cardiology",
-  "/dashboard/cardiology/ecg-ai": "ECG Interpretation (AI)",
-  "/dashboard/cardiology/risk-prediction": "Heart Risk Prediction",
-  "/dashboard/cardiology/imaging": "Imaging Utility",
-  "/dashboard/radiology": "Radiology",
-  "/dashboard/radiology/ai-imaging": "X-ray / MRI Analysis (AI)",
-  "/dashboard/radiology/lesion-detection": "Lesion Detection",
-  "/dashboard/radiology/report-gen": "Image Reports Generator",
-  "/dashboard/neurology": "Neurology",
-  "/dashboard/neurology/eeg-ai": "ECG Pattern Recognition",
-  "/dashboard/neurology/scan-analyzer": "Brain Scan Analyzer",
-  "/dashboard/neurology/ai-cognition": "Cognitive Assessment Tools",
-  "/dashboard/pathology": "Pathology",
-  "/dashboard/pathology/cell-classification": "Cell Image Classifier",
-  "/dashboard/pathology/report-summary": "Report Summarizer (AI)",
-  "/dashboard/pathology/specimen": "Specimen Tracker",
-  "/dashboard/monitoring": "Monitoring & Analytics",
-  "/dashboard/monitoring/dashboard": "Patient Data Dashboard",
-  "/dashboard/monitoring/anomaly": "Anomaly Detection (AI)",
-  "/dashboard/monitoring/insights": "Performance Insights",
-  "/dashboard/pulmonology": "Pulmonology",
-  "/dashboard/pulmonology/lung-function": "Lung Function Analysis (AI)",
-  "/dashboard/pulmonology/risk-prediction": "Heart Risk Prediction",
-  "/dashboard/pulmonology/imaging": "Imaging Utility",
-};
-
-function getCookie(name: string): string | null {
-  const value = `; ${document.cookie}`;
-  const parts = value.split(`; ${name}=`);
-  if (parts.length === 2) return parts.pop()?.split(';').shift() || null;
-  return null;
-}
-
-function setCookie(name: string, value: string, days: number = 7) {
-  const expires = new Date();
-  expires.setTime(expires.getTime() + days * 24 * 60 * 60 * 1000);
-  document.cookie = `${name}=${value};expires=${expires.toUTCString()};path=/`;
-}
 
 export default function Chat() {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -111,7 +62,7 @@ export default function Chat() {
       if (stored) {
         try {
           const addedPages: string[] = JSON.parse(stored);
-          addedFeatures = addedPages.map(page => featureMap[page] || page);
+          addedFeatures = addedPages.map(page => pageName(page));
         } catch (e) {
           console.error('Error parsing cookie:', e);
         }
