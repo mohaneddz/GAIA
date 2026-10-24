@@ -32,6 +32,7 @@ import {
   Cog,
   User,
   Boxes,
+  History,
   ScanSearch,
 } from "lucide-react"
 
@@ -130,9 +131,14 @@ const data = {
       icon: Boxes,
     },
     {
-      name: "Patient Search",
+      name: "Patients",
       url: "/patients",
       icon: User,
+    },
+    {
+      name: "History",
+      url: "/history",
+      icon: History,
     },
     {
       name: "Settings",
