@@ -21,35 +21,43 @@
   "classes": [
     {
       "name": "Basophil",
-      "description": "Granulocyte with dark purple granules; under 1% of white cells."
+      "description": "Granulocyte with dark purple granules; under 1% of white cells.",
+      "attention": false
     },
     {
       "name": "Eosinophil",
-      "description": "Granulocyte with orange-red granules; raised in allergy and parasitic infection."
+      "description": "Granulocyte with orange-red granules; raised in allergy and parasitic infection.",
+      "attention": false
     },
     {
       "name": "Erythroblast",
-      "description": "Nucleated red cell precursor; abnormal in adult peripheral blood."
+      "description": "Nucleated red cell precursor; abnormal in adult peripheral blood.",
+      "attention": true
     },
     {
       "name": "Immature granulocyte",
-      "description": "Promyelocyte, myelocyte or metamyelocyte; suggests a left shift."
+      "description": "Promyelocyte, myelocyte or metamyelocyte; suggests a left shift.",
+      "attention": true
     },
     {
       "name": "Lymphocyte",
-      "description": "Small round cell with a large nucleus; adaptive immunity."
+      "description": "Small round cell with a large nucleus; adaptive immunity.",
+      "attention": false
     },
     {
       "name": "Monocyte",
-      "description": "Largest white cell, kidney-shaped nucleus; becomes a macrophage."
+      "description": "Largest white cell, kidney-shaped nucleus; becomes a macrophage.",
+      "attention": false
     },
     {
       "name": "Neutrophil",
-      "description": "Segmented nucleus; the main responder to bacterial infection."
+      "description": "Segmented nucleus; the main responder to bacterial infection.",
+      "attention": false
     },
     {
       "name": "Platelet",
-      "description": "Anucleate fragment involved in clotting."
+      "description": "Anucleate fragment involved in clotting.",
+      "attention": false
     }
   ],
   "dataset": {

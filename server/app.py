@@ -9,12 +9,14 @@ load_dotenv(Path(__file__).with_name(".env"))
 
 import risk
 from chat import ChatUnavailable, chat_enabled, complete
+from records import records
 from signals.ecg import LEAD_NAMES, ecg_vitals, generate_ecg
 from signals.eeg import CHANNEL_NAMES, eeg_metrics, generate_eeg
 from vision import REGISTRY, UnknownModel, get_model, sample_path
 
 app = Flask(__name__)
 app.config["MAX_CONTENT_LENGTH"] = 10 * 1024 * 1024
+app.register_blueprint(records)
 
 # Vite dev server, plus the origins the Tauri webview uses on each platform.
 ALLOWED_ORIGINS = {
@@ -32,7 +34,7 @@ def allow_dashboard_origin(response):
         response.headers["Access-Control-Allow-Origin"] = origin
         response.headers["Vary"] = "Origin"
         response.headers["Access-Control-Allow-Headers"] = "Content-Type"
-        response.headers["Access-Control-Allow-Methods"] = "GET, POST"
+        response.headers["Access-Control-Allow-Methods"] = "GET, POST, PATCH, DELETE"
     return response
 
 

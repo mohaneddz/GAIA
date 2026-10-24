@@ -5,6 +5,7 @@ export const pageNames: Record<string, string> = {
   "/patients": "Patients",
   "/chat": "Ask GAIA",
   "/models": "Model Registry",
+  "/history": "Analysis History",
   "/settings": "Settings",
   "/dashboard/general/treatment": "Treatment Recommendations",
   "/dashboard/general/blood-analysis": "Blood Analysis",

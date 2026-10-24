@@ -21,11 +21,13 @@
   "classes": [
     {
       "name": "Malignant",
-      "description": "Features suspicious for carcinoma; biopsy is indicated."
+      "description": "Features suspicious for carcinoma; biopsy is indicated.",
+      "attention": true
     },
     {
       "name": "Normal or benign",
-      "description": "No lesion, or a lesion with benign features such as a cyst or fibroadenoma."
+      "description": "No lesion, or a lesion with benign features such as a cyst or fibroadenoma.",
+      "attention": false
     }
   ],
   "dataset": {

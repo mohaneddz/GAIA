@@ -1,4 +1,4 @@
-import { signalApiUrl } from "@/lib/signalApi"
+import { apiUrl, requestJson, sendJson } from "@/lib/api"
 
 export type ClassMetrics = { name: string; precision: number; recall: number; f1: number; support: number }
 
@@ -44,33 +44,19 @@ export type Prediction = {
   heatmap: string
 }
 
-async function readJson<T>(response: Response): Promise<T> {
-  if (!response.ok) {
-    const body = await response.json().catch(() => null)
-    throw new Error(body?.error ?? `Server returned ${response.status}`)
-  }
-  return response.json()
-}
+export const fetchModels = () => requestJson<ModelCard[]>("/api/models")
 
-export const fetchModels = () => fetch(`${signalApiUrl}/api/models`).then((r) => readJson<ModelCard[]>(r))
+export const fetchModel = (id: string) => requestJson<ModelCard>(`/api/models/${id}`)
 
-export const fetchModel = (id: string) => fetch(`${signalApiUrl}/api/models/${id}`).then((r) => readJson<ModelCard>(r))
-
-export const sampleUrl = (id: string, file: string) => `${signalApiUrl}/api/models/${id}/samples/${file}`
+export const sampleUrl = (id: string, file: string) => `${apiUrl}/api/models/${id}/samples/${file}`
 
 export function predictFile(id: string, file: File) {
   const form = new FormData()
   form.append("image", file)
-  return fetch(`${signalApiUrl}/api/models/${id}/predict`, { method: "POST", body: form }).then((r) => readJson<Prediction>(r))
+  return requestJson<Prediction>(`/api/models/${id}/predict`, { method: "POST", body: form })
 }
 
-export function predictSample(id: string, sample: string) {
-  return fetch(`${signalApiUrl}/api/models/${id}/predict`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ sample }),
-  }).then((r) => readJson<Prediction>(r))
-}
+export const predictSample = (id: string, sample: string) => sendJson<Prediction>(`/api/models/${id}/predict`, "POST", { sample })
 
 export const percent = (value: number, digits = 1) => `${(value * 100).toFixed(digits)}%`
 

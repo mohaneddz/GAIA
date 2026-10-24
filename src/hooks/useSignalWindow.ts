@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react"
 
+import { errorMessage } from "@/lib/api"
+
 // Fetches a signal window and replaces it every refreshMs, so the viewer keeps
 // showing new data while the page is open.
 export function useSignalWindow<T>(fetcher: (signal: AbortSignal) => Promise<T>, refreshMs = 10000) {
@@ -17,7 +19,7 @@ export function useSignalWindow<T>(fetcher: (signal: AbortSignal) => Promise<T>,
         })
         .catch((err) => {
           if (controller.signal.aborted) return
-          setError(err instanceof TypeError ? "Signal server is not reachable" : String(err.message ?? err))
+          setError(errorMessage(err))
         })
 
     load()

@@ -34,3 +34,6 @@ __pycache__/
 
 # Training data (set GAIA_DATA_DIR to keep it elsewhere)
 server/ml/data/
+
+# Local patient database
+server/data/

@@ -7,6 +7,8 @@ import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { percent } from "@/lib/visionApi"
 import { fetchRiskModel, scoreRisk, type RiskCard, type RiskFeature, type RiskInputs, type RiskResult } from "@/lib/riskApi"
+import { errorMessage } from "@/lib/api"
+import SaveAnalysis from "@/components/records/SaveAnalysis"
 
 const defaultsOf = (card: RiskCard): RiskInputs => Object.fromEntries(card.features.map((f) => [f.key, f.default]))
 
@@ -88,7 +90,7 @@ export default function RiskCalculator({ modelId }: { modelId: string }) {
         setCard(loaded)
         setInputs(defaultsOf(loaded))
       })
-      .catch((err) => setError(err instanceof TypeError ? "The GAIA server is not reachable. Start it with python server/app.py." : err.message))
+      .catch((err) => setError(errorMessage(err)))
   }, [modelId])
 
   // Rescore shortly after each edit; abort the previous request if still in flight.
@@ -170,6 +172,7 @@ export default function RiskCalculator({ modelId }: { modelId: string }) {
                   </p>
                   <Contributions result={result} />
                 </div>
+                <SaveAnalysis resultKey={JSON.stringify(inputs)} build={async () => ({ kind: "risk", model: modelId, inputs })} />
               </>
             )}
           </CardContent>

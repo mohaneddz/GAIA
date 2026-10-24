@@ -5,6 +5,9 @@ import { Link } from "react-router-dom"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import ConfusionMatrix from "@/components/vision/ConfusionMatrix"
+import SaveAnalysis from "@/components/records/SaveAnalysis"
+import { makeThumbnail } from "@/lib/recordsApi"
+import { errorMessage } from "@/lib/api"
 import {
   fetchModel,
   percent,
@@ -34,7 +37,7 @@ export default function ClassifierWorkbench({ modelId }: { modelId: string }) {
   useEffect(() => {
     fetchModel(modelId)
       .then(setCard)
-      .catch((err) => setLoadError(err instanceof TypeError ? "The GAIA server is not reachable. Start it with python server/app.py." : err.message))
+      .catch((err) => setLoadError(errorMessage(err)))
     return () => {
       if (uploadUrl.current) URL.revokeObjectURL(uploadUrl.current)
     }
@@ -226,6 +229,18 @@ export default function ClassifierWorkbench({ modelId }: { modelId: string }) {
                 <Info className="mt-0.5 h-3.5 w-3.5 shrink-0" />
                 On the test set, {percent(topStats.precision, 0)} of "{top.name}" predictions were correct, and the model found {percent(topStats.recall, 0)} of true {top.name.toLowerCase()} cases.
               </p>
+
+              {selection && (
+                <SaveAnalysis
+                  resultKey={selection.imageUrl}
+                  build={async () => ({
+                    kind: "vision",
+                    model: modelId,
+                    result: prediction,
+                    thumbnail: await makeThumbnail(selection.imageUrl),
+                  })}
+                />
+              )}
             </>
           )}
         </CardContent>

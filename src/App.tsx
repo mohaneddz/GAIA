@@ -5,6 +5,7 @@ import Patients from '@/routes/Patients';
 import Chat from '@/routes/Chat';
 import Settings from '@/routes/Settings';
 import Models from '@/routes/Models';
+import History from '@/routes/History';
 
 import Treatment from '@/routes/dashboard/general/Treatment';
 import BloodAnalysis from '@/routes/dashboard/general/BloodAnalysis';
@@ -24,12 +25,13 @@ import SkinLesion from '@/routes/dashboard/dermatology/SkinLesion';
 function App() {
   return (
     <Router>
-      <main className="center full col bg-slate-200 overflow-y-auto">
+      <main className="full col items-center bg-slate-200 overflow-y-auto">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/patients" element={<Patients />} />
           <Route path="/chat" element={<Chat />} />
           <Route path="/models" element={<Models />} />
+          <Route path="/history" element={<History />} />
           <Route path="/settings" element={<Settings />} />
 
           <Route path="/dashboard/general/treatment" element={<Treatment />} />

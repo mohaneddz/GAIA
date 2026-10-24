@@ -21,11 +21,13 @@
   "classes": [
     {
       "name": "Normal",
-      "description": "No radiographic sign of pneumonia."
+      "description": "No radiographic sign of pneumonia.",
+      "attention": false
     },
     {
       "name": "Pneumonia",
-      "description": "Opacities consistent with bacterial or viral pneumonia."
+      "description": "Opacities consistent with bacterial or viral pneumonia.",
+      "attention": true
     }
   ],
   "dataset": {

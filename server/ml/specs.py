@@ -10,6 +10,8 @@ MEDMNIST_CITATION = "Yang et al., MedMNIST v2, Scientific Data 2023"
 class ClassInfo:
     name: str
     description: str
+    # Saved results with this class predicted are flagged for review.
+    attention: bool = False
 
 
 @dataclass
@@ -44,7 +46,7 @@ SPECS = {
         citation=MEDMNIST_CITATION + "; Kermany et al., Cell 2018",
         classes=[
             ClassInfo("Normal", "No radiographic sign of pneumonia."),
-            ClassInfo("Pneumonia", "Opacities consistent with bacterial or viral pneumonia."),
+            ClassInfo("Pneumonia", "Opacities consistent with bacterial or viral pneumonia.", attention=True),
         ],
         input_size=224,
         location="pneumoniamnist_128",
@@ -61,8 +63,8 @@ SPECS = {
         classes=[
             ClassInfo("Basophil", "Granulocyte with dark purple granules; under 1% of white cells."),
             ClassInfo("Eosinophil", "Granulocyte with orange-red granules; raised in allergy and parasitic infection."),
-            ClassInfo("Erythroblast", "Nucleated red cell precursor; abnormal in adult peripheral blood."),
-            ClassInfo("Immature granulocyte", "Promyelocyte, myelocyte or metamyelocyte; suggests a left shift."),
+            ClassInfo("Erythroblast", "Nucleated red cell precursor; abnormal in adult peripheral blood.", attention=True),
+            ClassInfo("Immature granulocyte", "Promyelocyte, myelocyte or metamyelocyte; suggests a left shift.", attention=True),
             ClassInfo("Lymphocyte", "Small round cell with a large nucleus; adaptive immunity."),
             ClassInfo("Monocyte", "Largest white cell, kidney-shaped nucleus; becomes a macrophage."),
             ClassInfo("Neutrophil", "Segmented nucleus; the main responder to bacterial infection."),
@@ -81,11 +83,11 @@ SPECS = {
         dataset_license="CC BY-NC 4.0",
         citation=MEDMNIST_CITATION + "; Tschandl et al., Scientific Data 2018",
         classes=[
-            ClassInfo("Actinic keratosis", "Sun-damage lesion, including intraepithelial carcinoma; can progress to SCC."),
-            ClassInfo("Basal cell carcinoma", "The most common skin cancer; locally invasive, rarely metastasises."),
+            ClassInfo("Actinic keratosis", "Sun-damage lesion, including intraepithelial carcinoma; can progress to SCC.", attention=True),
+            ClassInfo("Basal cell carcinoma", "The most common skin cancer; locally invasive, rarely metastasises.", attention=True),
             ClassInfo("Benign keratosis", "Seborrhoeic keratosis, solar lentigo or lichen planus-like keratosis."),
             ClassInfo("Dermatofibroma", "Benign fibrous nodule, often on the legs."),
-            ClassInfo("Melanoma", "Malignant melanocytic tumour; needs urgent referral."),
+            ClassInfo("Melanoma", "Malignant melanocytic tumour; needs urgent referral.", attention=True),
             ClassInfo("Melanocytic nevus", "Common benign mole."),
             ClassInfo("Vascular lesion", "Angioma, angiokeratoma, pyogenic granuloma or haemorrhage."),
         ],
@@ -102,7 +104,7 @@ SPECS = {
         dataset_license="CC BY 4.0",
         citation=MEDMNIST_CITATION + "; Al-Dhabyani et al., Data in Brief 2020",
         classes=[
-            ClassInfo("Malignant", "Features suspicious for carcinoma; biopsy is indicated."),
+            ClassInfo("Malignant", "Features suspicious for carcinoma; biopsy is indicated.", attention=True),
             ClassInfo("Normal or benign", "No lesion, or a lesion with benign features such as a cyst or fibroadenoma."),
         ],
         input_size=224,
@@ -119,10 +121,10 @@ SPECS = {
         dataset_license="MIT",
         citation="Bhuvaji et al., Kaggle 2020",
         classes=[
-            ClassInfo("Glioma", "Tumour of glial cells, usually intra-axial within the brain parenchyma."),
-            ClassInfo("Meningioma", "Extra-axial tumour arising from the meninges; mostly benign."),
+            ClassInfo("Glioma", "Tumour of glial cells, usually intra-axial within the brain parenchyma.", attention=True),
+            ClassInfo("Meningioma", "Extra-axial tumour arising from the meninges; mostly benign.", attention=True),
             ClassInfo("No tumour", "No tumour visible on this slice."),
-            ClassInfo("Pituitary tumour", "Sellar mass, usually a pituitary adenoma."),
+            ClassInfo("Pituitary tumour", "Sellar mass, usually a pituitary adenoma.", attention=True),
         ],
         input_size=224,
         location="brain_tumor",

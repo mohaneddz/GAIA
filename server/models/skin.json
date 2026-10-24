@@ -21,31 +21,38 @@
   "classes": [
     {
       "name": "Actinic keratosis",
-      "description": "Sun-damage lesion, including intraepithelial carcinoma; can progress to SCC."
+      "description": "Sun-damage lesion, including intraepithelial carcinoma; can progress to SCC.",
+      "attention": true
     },
     {
       "name": "Basal cell carcinoma",
-      "description": "The most common skin cancer; locally invasive, rarely metastasises."
+      "description": "The most common skin cancer; locally invasive, rarely metastasises.",
+      "attention": true
     },
     {
       "name": "Benign keratosis",
-      "description": "Seborrhoeic keratosis, solar lentigo or lichen planus-like keratosis."
+      "description": "Seborrhoeic keratosis, solar lentigo or lichen planus-like keratosis.",
+      "attention": false
     },
     {
       "name": "Dermatofibroma",
-      "description": "Benign fibrous nodule, often on the legs."
+      "description": "Benign fibrous nodule, often on the legs.",
+      "attention": false
     },
     {
       "name": "Melanoma",
-      "description": "Malignant melanocytic tumour; needs urgent referral."
+      "description": "Malignant melanocytic tumour; needs urgent referral.",
+      "attention": true
     },
     {
       "name": "Melanocytic nevus",
-      "description": "Common benign mole."
+      "description": "Common benign mole.",
+      "attention": false
     },
     {
       "name": "Vascular lesion",
-      "description": "Angioma, angiokeratoma, pyogenic granuloma or haemorrhage."
+      "description": "Angioma, angiokeratoma, pyogenic granuloma or haemorrhage.",
+      "attention": false
     }
   ],
   "dataset": {

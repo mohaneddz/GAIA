@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import ConfusionMatrix from "@/components/vision/ConfusionMatrix"
 import { fetchModels, percent, toolRoutes, type ModelCard } from "@/lib/visionApi"
 import { fetchRiskModels, riskRoutes, type RiskCard } from "@/lib/riskApi"
+import { errorMessage } from "@/lib/api"
 
 function Summary({ models, riskModels }: { models: ModelCard[]; riskModels: RiskCard[] }) {
   const totals = [
@@ -133,7 +134,7 @@ export default function Models() {
         setModels(vision)
         setRiskModels(risk)
       })
-      .catch((err) => setError(err instanceof TypeError ? "The GAIA server is not reachable. Start it with python server/app.py." : err.message))
+      .catch((err) => setError(errorMessage(err)))
   }, [])
 
   return (
