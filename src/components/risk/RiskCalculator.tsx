@@ -179,7 +179,7 @@ export default function RiskCalculator({ modelId }: { modelId: string }) {
           <CardHeader>
             <CardTitle>About this model</CardTitle>
             <CardDescription>
-              {card.model.type} trained on {card.dataset.name}; {card.splits.test.toLocaleString()} patients held out for testing
+              Logistic regression trained on {card.dataset.name}; {card.splits.test.toLocaleString()} patients held out for testing
             </CardDescription>
           </CardHeader>
           <CardContent className="grid gap-6 md:grid-cols-2">
@@ -211,8 +211,8 @@ export default function RiskCalculator({ modelId }: { modelId: string }) {
               <ResponsiveContainer width="100%" height={170}>
                 <ScatterChart margin={{ left: -16, right: 8, top: 4 }}>
                   <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis type="number" dataKey="predicted" name="Predicted" domain={[0, "dataMax"]} tickFormatter={(v) => `${Math.round(v * 100)}%`} fontSize={11} />
-                  <YAxis type="number" dataKey="observed" name="Observed" domain={[0, "dataMax"]} tickFormatter={(v) => `${Math.round(v * 100)}%`} fontSize={11} />
+                  <XAxis type="number" dataKey="predicted" name="Predicted" domain={[0, 1]} ticks={[0, 0.25, 0.5, 0.75, 1]} tickFormatter={(v) => `${Math.round(v * 100)}%`} fontSize={11} />
+                  <YAxis type="number" dataKey="observed" name="Observed" domain={[0, 1]} ticks={[0, 0.25, 0.5, 0.75, 1]} tickFormatter={(v) => `${Math.round(v * 100)}%`} fontSize={11} />
                   <ReferenceLine segment={[{ x: 0, y: 0 }, { x: 1, y: 1 }]} stroke="#94a3b8" strokeDasharray="4 4" ifOverflow="hidden" />
                   <Tooltip formatter={(v: number) => percent(v)} />
                   <Scatter data={card.metrics.calibration} fill="var(--primary)" isAnimationActive={false} />
