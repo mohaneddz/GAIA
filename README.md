@@ -165,6 +165,18 @@ python -m pytest
 
 ---
 
+## Models and risk tools
+
+<p align="center">
+  <img src="docs/screenshots/model-registry.png" alt="Model registry listing each classifier with test metrics, validation curve and confusion matrix" width="100%">
+</p>
+
+<p align="center">
+  <img src="docs/screenshots/heart-risk.png" alt="Heart disease risk calculator showing an 83.5% estimate and the per-input contributions to it" width="100%">
+</p>
+
+---
+
 ## Live signal views
 
 <p align="center">
