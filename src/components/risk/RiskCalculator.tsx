@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input"
 import { percent } from "@/lib/visionApi"
 import { fetchRiskModel, scoreRisk, type RiskCard, type RiskFeature, type RiskInputs, type RiskResult } from "@/lib/riskApi"
 import { errorMessage } from "@/lib/api"
+import SaveAnalysis from "@/components/records/SaveAnalysis"
 
 const defaultsOf = (card: RiskCard): RiskInputs => Object.fromEntries(card.features.map((f) => [f.key, f.default]))
 
@@ -171,6 +172,7 @@ export default function RiskCalculator({ modelId }: { modelId: string }) {
                   </p>
                   <Contributions result={result} />
                 </div>
+                <SaveAnalysis resultKey={JSON.stringify(inputs)} build={async () => ({ kind: "risk", model: modelId, inputs })} />
               </>
             )}
           </CardContent>
