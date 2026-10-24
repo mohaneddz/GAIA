@@ -1,4 +1,4 @@
-export const signalApiUrl = import.meta.env.VITE_SIGNAL_API_URL ?? "http://127.0.0.1:5600"
+import { requestJson, sendJson } from "@/lib/api"
 
 export type SignalSample = { time: number } & Record<string, number>
 
@@ -35,24 +35,9 @@ export type EegWindow = {
 
 export type ChatTurn = { role: "user" | "assistant"; content: string }
 
-async function getJson<T>(path: string, signal?: AbortSignal, init?: RequestInit): Promise<T> {
-  const response = await fetch(`${signalApiUrl}${path}`, { signal, ...init })
-  if (!response.ok) {
-    const body = await response.json().catch(() => null)
-    throw new Error(body?.error ?? `Signal server returned ${response.status}`)
-  }
-  return response.json()
-}
+export const fetchEcg = (signal?: AbortSignal) => requestJson<EcgWindow>("/api/ecg", { signal })
+export const fetchEeg = (signal?: AbortSignal) => requestJson<EegWindow>("/api/eeg", { signal })
+export const fetchHealth = () => requestJson<{ status: string; chat: boolean }>("/api/health")
 
-export const fetchEcg = (signal?: AbortSignal) => getJson<EcgWindow>("/api/ecg", signal)
-export const fetchEeg = (signal?: AbortSignal) => getJson<EegWindow>("/api/eeg", signal)
-export const fetchHealth = () => getJson<{ status: string; chat: boolean }>("/api/health")
-
-export const sendChat = async (messages: ChatTurn[], addedFeatures: string[]) => {
-  const body = await getJson<{ reply: string }>("/api/chat", undefined, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ messages, addedFeatures }),
-  })
-  return body.reply
-}
+export const sendChat = async (messages: ChatTurn[], addedFeatures: string[]) =>
+  (await sendJson<{ reply: string }>("/api/chat", "POST", { messages, addedFeatures })).reply

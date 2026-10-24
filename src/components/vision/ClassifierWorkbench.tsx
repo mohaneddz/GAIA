@@ -5,6 +5,7 @@ import { Link } from "react-router-dom"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import ConfusionMatrix from "@/components/vision/ConfusionMatrix"
+import { errorMessage } from "@/lib/api"
 import {
   fetchModel,
   percent,
@@ -34,7 +35,7 @@ export default function ClassifierWorkbench({ modelId }: { modelId: string }) {
   useEffect(() => {
     fetchModel(modelId)
       .then(setCard)
-      .catch((err) => setLoadError(err instanceof TypeError ? "The GAIA server is not reachable. Start it with python server/app.py." : err.message))
+      .catch((err) => setLoadError(errorMessage(err)))
     return () => {
       if (uploadUrl.current) URL.revokeObjectURL(uploadUrl.current)
     }
