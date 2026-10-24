@@ -21,19 +21,23 @@
   "classes": [
     {
       "name": "Glioma",
-      "description": "Tumour of glial cells, usually intra-axial within the brain parenchyma."
+      "description": "Tumour of glial cells, usually intra-axial within the brain parenchyma.",
+      "attention": true
     },
     {
       "name": "Meningioma",
-      "description": "Extra-axial tumour arising from the meninges; mostly benign."
+      "description": "Extra-axial tumour arising from the meninges; mostly benign.",
+      "attention": true
     },
     {
       "name": "No tumour",
-      "description": "No tumour visible on this slice."
+      "description": "No tumour visible on this slice.",
+      "attention": false
     },
     {
       "name": "Pituitary tumour",
-      "description": "Sellar mass, usually a pituitary adenoma."
+      "description": "Sellar mass, usually a pituitary adenoma.",
+      "attention": true
     }
   ],
   "dataset": {
